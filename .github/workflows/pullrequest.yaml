@@ -12,7 +12,7 @@ on:
 
 jobs:
   terraform:
-    uses: ./.github/workflows/templates/terraform-template-pr.yaml
+    uses: ./.github/workflows/terraform-template-pr.yaml
     strategy:
       matrix:
         environment: 
@@ -21,13 +21,13 @@ jobs:
       max-parallel: 1
     with:
       environment: ${{ matrix.environment }}
-      backend_tf_rg: ${{ secrets.BACKEND_RG }}
-      backend_tf_sa: ${{ secrets.BACKEND_SA }}
       backend_tfstate_name: ${{ matrix.environment }}-tf-github
       tfstate_container: github-tf-state-${{ matrix.environment }}
-      working_directory: ./terraform
+      working_directory: terraform
     secrets:
       CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
       CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
       SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
       TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+      backend_tf_rg: ${{ secrets.BACKEND_RG }}
+      backend_tf_sa: ${{ secrets.BACKEND_SA }}
