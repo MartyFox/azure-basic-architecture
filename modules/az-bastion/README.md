@@ -94,13 +94,13 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_bastion_name"></a> [bastion\_name](#input\_bastion\_name) | The name for Bastion host | `string` | `"bastion-001"` | no |
 | <a name="input_location"></a> [location](#input\_location) | Azure Region to deploy the Azure Bastion components | `string` | n/a | yes |
-| <a name="input_nsg_name"></a> [nsg\_name](#input\_nsg\_name) | The name to give to the Azure Bastion Network Security Group | `string` | `"nsg-bastion-001"` | no |
-| <a name="input_publicip_name"></a> [publicip\_name](#input\_publicip\_name) | The name for the Public IP for the Bastion | `string` | `"pip-bastion-001"` | no |
 | <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | The resource group name this Azure Bastion will be created in | `string` | n/a | yes |
 | <a name="input_subnet_id"></a> [subnet\_id](#input\_subnet\_id) | The subnetId for the AzureBastionSubnet the Bastion will be created in | `string` | n/a | yes |
-| <a name="input_tags"></a> [tags](#input\_tags) | The tags to be applied to this resource | `map` | <pre>{<br>  "terraform": "true"<br>}</pre> | no |
+| <a name="input_bastion_name"></a> [bastion\_name](#input\_bastion\_name) | The name for Bastion host | `string` | `"bastion-001"` | no |
+| <a name="input_nsg_name"></a> [nsg\_name](#input\_nsg\_name) | The name to give to the Azure Bastion Network Security Group | `string` | `"nsg-bastion-001"` | no |
+| <a name="input_publicip_name"></a> [publicip\_name](#input\_publicip\_name) | The name for the Public IP for the Bastion | `string` | `"pip-bastion-001"` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | The tags to be applied to this resource | `map(any)` | <pre>{<br>  "terraform": "true"<br>}</pre> | no |
 
 ## Outputs
 

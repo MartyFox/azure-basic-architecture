@@ -1,4 +1,4 @@
-name: 'Terraform Deploy'
+name: 'Terraform Pull Request Plan'
  
 on:
   pull_request:

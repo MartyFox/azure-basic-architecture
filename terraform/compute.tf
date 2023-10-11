@@ -31,7 +31,7 @@
 #   name                = "rsi-vm-backend"
 #   size                = "Standard_F2s_v2"
 #   admin_username      = "adminuser"
-  
+
 #   network_interface_ids = [
 #     azurerm_network_interface.backend.id,
 #   ]

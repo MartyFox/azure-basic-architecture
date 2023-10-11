@@ -1,15 +1,15 @@
 variable "location" {
-  type = string
+  type    = string
   default = "uk south"
 }
 
 variable "tags" {
-  type = map()
+  type    = map(any)
   default = {}
 }
 
-variable "admin_password" {
-  description = "administrator password"
-  type        = string
-  sensitive   = true
-}
+# variable "admin_password" {
+#   description = "administrator password"
+#   type        = string
+#   sensitive   = true
+# }

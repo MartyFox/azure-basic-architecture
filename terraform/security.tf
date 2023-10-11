@@ -1,9 +1,10 @@
+#tfsec:ignore:azure-network-no-public-ingress
 module "nsg-public" {
   source  = "Azure/network-security-group/azurerm"
   version = "4.1.0"
 
-  resource_group_name   = azurerm_resource_group.rsi.name
-  location              = var.location
+  resource_group_name = azurerm_resource_group.rsi.name
+  location            = var.location
 
   security_group_name   = "rsi-nsg-public"
   source_address_prefix = ["*"]
@@ -31,11 +32,11 @@ module "nsg-public" {
   ]
 
   tags = merge(
-        local.default_tags,
-        map(
-        "Component", "Frontend",
-        "Public", "true"
-    ))
+    local.default_tags,
+    map(
+      "Component", "Frontend",
+      "Public", "true"
+  ))
 
   depends_on = [azurerm_resource_group.rsi]
 }
@@ -44,10 +45,10 @@ module "nsg-fe" {
   source  = "Azure/network-security-group/azurerm"
   version = "4.1.0"
 
-  resource_group_name   = azurerm_resource_group.rsi.name
-  location              = var.location
+  resource_group_name = azurerm_resource_group.rsi.name
+  location            = var.location
 
-  security_group_name   = "rsi-nsg-frontend"
+  security_group_name = "rsi-nsg-frontend"
 
   custom_rules = [
     {
@@ -72,10 +73,10 @@ module "nsg-fe" {
   ]
 
   tags = merge(
-        local.default_tags,
-        map(
-        "Component", "Frontend",
-    ))
+    local.default_tags,
+    map(
+      "Component", "Frontend",
+  ))
 
   depends_on = [azurerm_resource_group.rsi]
 }
@@ -84,10 +85,10 @@ module "nsg-be" {
   source  = "Azure/network-security-group/azurerm"
   version = "4.1.0"
 
-  resource_group_name   = azurerm_resource_group.rsi.name
-  location              = var.location
+  resource_group_name = azurerm_resource_group.rsi.name
+  location            = var.location
 
-  security_group_name   = "rsi-nsg-backend"
+  security_group_name = "rsi-nsg-backend"
 
   custom_rules = [
     {
@@ -132,10 +133,10 @@ module "nsg-be" {
   ]
 
   tags = merge(
-        local.default_tags,
-        map(
-        "Component", "Backend",
-    ))
+    local.default_tags,
+    map(
+      "Component", "Backend",
+  ))
 
   depends_on = [azurerm_resource_group.rsi]
 }

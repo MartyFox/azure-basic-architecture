@@ -32,7 +32,7 @@ variable "nsg_name" {
 }
 
 variable "tags" {
-  type        = map
+  type        = map(any)
   description = "The tags to be applied to this resource"
   default = {
     terraform = "true"
