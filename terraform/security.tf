@@ -33,10 +33,11 @@ module "nsg-public" {
 
   tags = merge(
     local.default_tags,
-    tomap(
-      "Component", "Frontend",
-      "Public", "true"
-  ))
+    tomap({
+      "Component" = "Frontend",
+      "Public"    = "true"
+    })
+  )
 
   depends_on = [azurerm_resource_group.rsi]
 }
@@ -74,9 +75,10 @@ module "nsg-fe" {
 
   tags = merge(
     local.default_tags,
-    tomap(
-      "Component", "Frontend",
-  ))
+    tomap({
+      "Component" = "Frontend",
+    })
+  )
 
   depends_on = [azurerm_resource_group.rsi]
 }
@@ -134,9 +136,10 @@ module "nsg-be" {
 
   tags = merge(
     local.default_tags,
-    tomap(
-      "Component", "Backend",
-  ))
+    tomap({
+      "Component" = "Backend",
+    })
+  )
 
   depends_on = [azurerm_resource_group.rsi]
 }

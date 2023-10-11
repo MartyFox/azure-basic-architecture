@@ -54,11 +54,11 @@
 #   }
 
 #   tags = merge(
-#         local.default_tags,
-#         tomap(
-#         "Component", "Backend"
-#     ))
-
+#       local.default_tags,
+#       tomap({
+#       "Component" = "Backend"
+#       })
+#   )
 # }
 
 # resource "azurerm_network_interface" "backend" {
@@ -74,8 +74,9 @@
 #   }
 
 #   tags = merge(
-#         local.default_tags,
-#         tomap(
-#         "Component", "Backend"
-#     ))
+#       local.default_tags,
+#       tomap({
+#       "Component" = "Backend"
+#       })
+#   )
 # }

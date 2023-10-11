@@ -2,10 +2,11 @@ locals {
 
   default_tags = merge(
     var.tags,
-    tomap(
-      "Terraform", "true",
-      "Region", var.location
-  ))
+    tomap({
+      "Terraform" = "true",
+      "Region"    = var.location
+    })
+  )
 
   vnet_address_prefixes = {
     rsi-fe = "10.0.0.0/16",

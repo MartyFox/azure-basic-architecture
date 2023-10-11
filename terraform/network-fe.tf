@@ -6,9 +6,10 @@ resource "azurerm_route_table" "rsi-routetable-fe" {
 
   tags = merge(
     local.default_tags,
-    tomap(
-      "Component", "Frontend"
-  ))
+    tomap({
+      "Component" = "Frontend"
+    })
+  )
 }
 
 module "rsi-fe" {
@@ -35,9 +36,10 @@ module "rsi-fe" {
 
   tags = merge(
     local.default_tags,
-    tomap(
-      "Component", "Frontend"
-  ))
+    tomap({
+      "Component" = "Frontend"
+    })
+  )
 }
 
 
@@ -65,9 +67,10 @@ module "fe-loadbalancer" {
 
   tags = merge(
     local.default_tags,
-    tomap(
-      "Component", "Frontend"
-  ))
+    tomap({
+      "Component" = "Frontend"
+    })
+  )
 
   depends_on = [
     azurerm_resource_group.rsi,

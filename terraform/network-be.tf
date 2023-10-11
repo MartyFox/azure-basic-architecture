@@ -6,9 +6,9 @@ resource "azurerm_route_table" "rsi-routetable-be" {
 
   tags = merge(
     local.default_tags,
-    tomap(
-      "Component", "Backend"
-  ))
+    tomap({
+      "Component" = "Backend"
+  }))
 }
 
 module "rsi-be" {
@@ -33,8 +33,8 @@ module "rsi-be" {
 
   tags = merge(
     local.default_tags,
-    tomap(
-      "Component", "Backend"
-  ))
+    tomap({
+      "Component" = "Backend"
+  }))
 }
 

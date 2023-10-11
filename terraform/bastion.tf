@@ -16,9 +16,9 @@
 
 #   tags = merge(
 #     local.default_tags,
-#     tomap(
-#       "ServiceTeam", "Networks"
-#     )
+#     tomap({}
+#       "ServiceTeam" = "Networks"
+#     })
 #   )
 
 #   depends_on = [
