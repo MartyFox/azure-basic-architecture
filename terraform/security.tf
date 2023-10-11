@@ -25,7 +25,7 @@ module "nsg-public" {
       priority               = "4096"
       direction              = "Inbound"
       access                 = "Deny"
-      protocol               = "tcp"
+      protocol               = "Tcp"
       destination_port_range = "*"
       description            = "default-deny"
     }
@@ -57,7 +57,7 @@ module "nsg-fe" {
       priority               = "101"
       direction              = "Inbound"
       access                 = "Allow"
-      protocol               = "tcp"
+      protocol               = "Tcp"
       destination_port_range = "*"
       source_address_prefix  = "AzureLoadBalancer"
       description            = "AzureLoadBalancerAllowed"
@@ -67,7 +67,7 @@ module "nsg-fe" {
       priority               = "4096"
       direction              = "Inbound"
       access                 = "Deny"
-      protocol               = "tcp"
+      protocol               = "Tcp"
       destination_port_range = "*"
       description            = "default-deny"
     }
@@ -98,7 +98,7 @@ module "nsg-be" {
       priority               = "101"
       direction              = "Inbound"
       access                 = "Allow"
-      protocol               = "tcp"
+      protocol               = "Tcp"
       destination_port_range = "22"
       source_address_prefix  = local.subnet_addresses["frontend"]
       description            = "FrontendAllowSSH"
@@ -108,7 +108,7 @@ module "nsg-be" {
       priority               = "102"
       direction              = "Inbound"
       access                 = "Allow"
-      protocol               = "icmp"
+      protocol               = "Icmp"
       destination_port_range = "*"
       source_address_prefix  = local.subnet_addresses["frontend"]
       description            = "FrontendAllowSSH"
@@ -128,7 +128,7 @@ module "nsg-be" {
       priority               = "4096"
       direction              = "Inbound"
       access                 = "Deny"
-      protocol               = "tcp"
+      protocol               = "Tcp"
       destination_port_range = "*"
       description            = "default-deny"
     }
