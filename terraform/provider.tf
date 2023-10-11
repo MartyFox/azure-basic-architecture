@@ -8,15 +8,11 @@ terraform {
     }
   }
 
-  backend "azurerm" {
-    resource_group_name  = ""
-    storage_account_name = ""
-    container_name       = ""
-    key                  = ""
-  }
+  backend "azurerm" {}
 }
 
 # Configure the Microsoft Azure Provider
 provider "azurerm" {
+  skip_provider_registration = "true"
   features {}
 }
