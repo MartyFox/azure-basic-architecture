@@ -26,7 +26,7 @@ jobs:
       backend_tf_sa: ${{ secrets.BACKEND_SA }}
       backend_tfstate_name: ${{ matrix.environment }}-tf-github
       tfstate_container: github-tf-state-${{ matrix.environment }}
-      working_directory: terraform
+      working_directory: ./terraform
     secrets:
       CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
       CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
