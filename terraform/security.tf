@@ -118,7 +118,7 @@ module "nsg-be" {
       priority               = "201"
       direction              = "Inbound"
       access                 = "Allow"
-      protocol               = "tcp"
+      protocol               = "Tcp"
       destination_port_range = "3306"
       source_address_prefix  = local.subnet_addresses["frontend"]
       description            = "FrontendAllowMySQL"
