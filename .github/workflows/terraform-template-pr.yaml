@@ -67,7 +67,6 @@ jobs:
         run: terraform validate
 
       - name: Terraform Plan  
-        needs: init
         id: plan
         continue-on-error: false
         if: github.event_name == 'pull_request'
@@ -79,7 +78,6 @@ jobs:
         run: terraform plan -no-color -input=false -var-file="../environments/${{ inputs.environment }}.tfvars"
 
       - name: Add Plan to PR
-        needs: plan
         id: comment
         uses: actions/github-script@v3
         if: github.event_name == 'pull_request'
