@@ -58,7 +58,6 @@ jobs:
         run: terraform init -backend-config="resource_group_name=${{ secrets.BACKEND_TF_RG }}" -backend-config="storage_account_name=${{ secrets.BACKEND_TF_SA }}" -backend-config="container_name=${{ inputs.tfstate_container }}" -backend-config="key=${{ inputs.backend_tfstate_name }}.tfstate"
         
       - name: Terraform Plan  
-        needs: init
         id: plan
         continue-on-error: false
         if: github.event_name == 'pull_request'
@@ -71,7 +70,6 @@ jobs:
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main'
-        needs: plan
         id: apply
         continue-on-error: false
         env:
