@@ -9,8 +9,12 @@ on:
       - 'environments/**.tfvars'
       - '.github/workflows/pullrequest.yaml'
 
+env:
+  TF_LOG: INFO
+
 jobs:
   terraform:
+    name: 'Terraform'
     uses: ./.github/workflows/terraform-template-pr.yaml
     strategy:
       matrix:

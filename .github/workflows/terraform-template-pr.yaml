@@ -31,7 +31,7 @@ on:
  
  
 jobs:
-  deploy-terraform:
+  plan-terraform:
     name: terraform-${{ inputs.environment }}-deploy
     environment: ${{ inputs.environment }}
     runs-on: ubuntu-latest
@@ -82,13 +82,13 @@ jobs:
         uses: actions/github-script@v3
         if: github.event_name == 'pull_request'
         env:
-          PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+          PLAN: "plan-terraform\n${{ steps.plan.outputs.stdout }}"
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
             #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
-            #### Terraform Validation 🤖${{ steps.validate.outputs.stdout }}
+            #### Terraform Validation 🤖${{ steps.validate.outcome }}
             #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
         
             <details><summary>Show Plan</summary>
