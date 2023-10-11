@@ -12,7 +12,7 @@ on:
 
 jobs:
   terraform:
-    uses: ./.github/workflows/templates/terraform-terraform-deploy.yaml
+    uses: ./.github/workflows/terraform-terraform-deploy.yaml
     strategy:
       matrix:
         environment: 
