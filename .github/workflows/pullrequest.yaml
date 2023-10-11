@@ -1,7 +1,6 @@
 name: 'Terraform Deploy'
  
 on:
-  push:
   pull_request:
     branches:
       - main

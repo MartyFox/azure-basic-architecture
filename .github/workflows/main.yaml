@@ -8,7 +8,6 @@ on:
       - 'terraform/**.tf'
       - 'environments/**.tfvars'
       - '.github/workflows/main.yaml'
-  pull_request:
 
 jobs:
   terraform:
