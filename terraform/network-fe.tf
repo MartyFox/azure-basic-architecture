@@ -6,7 +6,7 @@ resource "azurerm_route_table" "rsi-routetable-fe" {
 
   tags = merge(
     local.default_tags,
-    map(
+    tomap(
       "Component", "Frontend"
   ))
 }
@@ -19,8 +19,8 @@ module "rsi-fe" {
   vnet_location       = var.location
 
   use_for_each    = true
-  address_space   = [local.vnet_address_prefixes[rsi-fe]]
-  subnet_prefixes = [local.subnet_addresses[public], local.subnet_addresses[frontend]]
+  address_space   = [local.vnet_address_prefixes["rsi-fe"]]
+  subnet_prefixes = [local.subnet_addresses["public"], local.subnet_addresses["frontend"]]
   subnet_names    = ["public", "frontend"]
 
   nsg_ids = {
@@ -35,7 +35,7 @@ module "rsi-fe" {
 
   tags = merge(
     local.default_tags,
-    map(
+    tomap(
       "Component", "Frontend"
   ))
 }
@@ -65,7 +65,7 @@ module "fe-loadbalancer" {
 
   tags = merge(
     local.default_tags,
-    map(
+    tomap(
       "Component", "Frontend"
   ))
 

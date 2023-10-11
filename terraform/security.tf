@@ -33,7 +33,7 @@ module "nsg-public" {
 
   tags = merge(
     local.default_tags,
-    map(
+    tomap(
       "Component", "Frontend",
       "Public", "true"
   ))
@@ -74,7 +74,7 @@ module "nsg-fe" {
 
   tags = merge(
     local.default_tags,
-    map(
+    tomap(
       "Component", "Frontend",
   ))
 
@@ -98,7 +98,7 @@ module "nsg-be" {
       access                 = "Allow"
       protocol               = "tcp"
       destination_port_range = "22"
-      source_address_prefix  = local.subnet_addresses[frontend]
+      source_address_prefix  = local.subnet_addresses["frontend"]
       description            = "FrontendAllowSSH"
     },
     {
@@ -108,7 +108,7 @@ module "nsg-be" {
       access                 = "Allow"
       protocol               = "icmp"
       destination_port_range = "*"
-      source_address_prefix  = local.subnet_addresses[frontend]
+      source_address_prefix  = local.subnet_addresses["frontend"]
       description            = "FrontendAllowSSH"
     },
     {
@@ -118,7 +118,7 @@ module "nsg-be" {
       access                 = "Allow"
       protocol               = "tcp"
       destination_port_range = "3306"
-      source_address_prefix  = local.subnet_addresses[frontend]
+      source_address_prefix  = local.subnet_addresses["frontend"]
       description            = "FrontendAllowMySQL"
     },
     {
@@ -134,7 +134,7 @@ module "nsg-be" {
 
   tags = merge(
     local.default_tags,
-    map(
+    tomap(
       "Component", "Backend",
   ))
 

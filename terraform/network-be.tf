@@ -6,7 +6,7 @@ resource "azurerm_route_table" "rsi-routetable-be" {
 
   tags = merge(
     local.default_tags,
-    map(
+    tomap(
       "Component", "Backend"
   ))
 }
@@ -19,8 +19,8 @@ module "rsi-be" {
   vnet_location       = var.location
 
   use_for_each    = true
-  address_space   = [local.vnet_address_prefixes[rsi-be]]
-  subnet_prefixes = [local.subnet_addresses[backend]]
+  address_space   = [local.vnet_address_prefixes["rsi-be"]]
+  subnet_prefixes = [local.subnet_addresses["backend"]]
   subnet_names    = ["backend"]
 
   nsg_ids = {
@@ -33,7 +33,7 @@ module "rsi-be" {
 
   tags = merge(
     local.default_tags,
-    map(
+    tomap(
       "Component", "Backend"
   ))
 }

@@ -19,7 +19,7 @@
 
 #   tags = merge(
 #           local.default_tags,
-#           map(
+#           tomap(
 #           "Component", "Frontend"
 #       ))
 # }
@@ -55,7 +55,7 @@
 
 #   tags = merge(
 #         local.default_tags,
-#         map(
+#         tomap(
 #         "Component", "Backend"
 #     ))
 
@@ -75,7 +75,7 @@
 
 #   tags = merge(
 #         local.default_tags,
-#         map(
+#         tomap(
 #         "Component", "Backend"
 #     ))
 # }

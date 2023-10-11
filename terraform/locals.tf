@@ -2,7 +2,7 @@ locals {
 
   default_tags = merge(
     var.tags,
-    map(
+    tomap(
       "Terraform", "true",
       "Region", var.location
   ))

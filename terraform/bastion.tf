@@ -16,7 +16,7 @@
 
 #   tags = merge(
 #     local.default_tags,
-#     map(
+#     tomap(
 #       "ServiceTeam", "Networks"
 #     )
 #   )
