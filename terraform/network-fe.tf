@@ -51,12 +51,13 @@ module "fe-loadbalancer" {
   source  = "Azure/loadbalancer/azurerm"
   version = "4.4.0"
 
-  resource_group_name = azurerm_resource_group.rsi.name
-  location            = var.location
-  name                = "fe-lb"
-  lb_sku              = "Standard"
-  pip_sku             = "Standard"
-  pip_name            = "fe-lb-pip"
+  resource_group_name   = azurerm_resource_group.rsi.name
+  location              = var.location
+  name                  = "fe-lb"
+  lb_sku                = "Standard"
+  pip_sku               = "Standard"
+  pip_name              = "fe-lb-pip"
+  pip_domain_name_label = "rsi-${environment}"
 
   lb_port = {
     http = ["80", "Tcp", "80"]
