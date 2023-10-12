@@ -118,13 +118,13 @@ jobs:
               #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
               #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
 
-              *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ inputs.working_directory }}\`, Workflow: \`${{ github.workflow }}\`*`;  
+              *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ inputs.working_directory }}\`, Workflow: \`${{ github.workflow }}\`*` 
               
               <details><summary>Show Plan</summary>
               \`\`\`\n
               ${plans[i]}
               \`\`\`
-              </details>             
+              </details>;
 
               await github.rest.issues.createComment({
                 issue_number: context.issue.number,
