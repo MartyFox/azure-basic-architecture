@@ -22,8 +22,8 @@ module "rsi-vnet-fe" {
 
   use_for_each    = true
   address_space   = [local.vnet_address_prefixes["rsi-fe"]]
-  subnet_prefixes = [local.subnet_addresses["public"], local.subnet_addresses["frontend"]]
-  subnet_names    = ["public", "frontend"]
+  subnet_prefixes = [local.subnet_addresses["public"], local.subnet_addresses["frontend"], local.subnet_addresses["azurebastion"]]
+  subnet_names    = ["public", "frontend", "AzureBastionSubnet"]
 
   nsg_ids = {
     public   = module.nsg-public.network_security_group_id
