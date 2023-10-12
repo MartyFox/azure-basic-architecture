@@ -1,4 +1,4 @@
-name: pr workflow - tf plan
+name: Terraform Plan - PR only
  
 on:
   workflow_call:

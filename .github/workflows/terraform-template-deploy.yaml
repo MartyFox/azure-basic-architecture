@@ -1,4 +1,4 @@
-name: pr workflow - tf plan
+name: Terraform Deploy
  
 on:
   workflow_call:
