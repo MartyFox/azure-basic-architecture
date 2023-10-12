@@ -10,6 +10,7 @@ data "cloudinit_config" "vmss-fe-config" {
   }
 }
 
+
 resource "azurerm_linux_virtual_machine_scale_set" "rsi-frontend-vmss" {
 
   resource_group_name = azurerm_resource_group.rsi.name
