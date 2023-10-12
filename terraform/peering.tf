@@ -9,8 +9,8 @@ resource "azurerm_virtual_network_peering" "rsi-fe-to-be" {
   }
 
   depends_on = [
-    module.rrsi-vnet-fe,
-    module.rrsi-vnet-be,
+    module.rsi-vnet-fe,
+    module.rsi-vnet-be,
   ]
 }
 
@@ -25,7 +25,7 @@ resource "azurerm_virtual_network_peering" "rsi-be-to-fe" {
   }
 
   depends_on = [
-    module.rrsi-vnet-fe,
-    module.rrsi-vnet-be,
+    module.rsi-vnet-fe,
+    module.rsi-vnet-be,
   ]
 }
