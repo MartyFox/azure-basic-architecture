@@ -1,5 +1,4 @@
 name: Terraform Deploy - template
-run-name: Terraform Deployment for - ${{ inputs.environment }}
 
 on:
   workflow_call:
