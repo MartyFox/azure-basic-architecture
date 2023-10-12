@@ -57,10 +57,9 @@ jobs:
           ARM_TENANT_ID: ${{ secrets.TENANT_ID }}
         run: terraform init -backend-config="resource_group_name=${{ secrets.BACKEND_TF_RG }}" -backend-config="storage_account_name=${{ secrets.BACKEND_TF_SA }}" -backend-config="container_name=${{ inputs.tfstate_container }}" -backend-config="key=${{ inputs.backend_tfstate_name }}.tfstate"
         
-      - name: Terraform Plan  
+      - name: Terraform Plan
         id: plan
         continue-on-error: false
-        if: github.event_name == 'pull_request'
         env:
           ARM_CLIENT_ID: ${{ secrets.CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
