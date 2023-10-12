@@ -41,7 +41,7 @@ jobs:
         working-directory: ${{ inputs.working_directory }}
     
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
   
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
@@ -79,10 +79,10 @@ jobs:
 
       - name: Add Plan to PR
         id: comment
-        uses: actions/github-script@v3
+        uses: actions/github-script@v6
         if: github.event_name == 'pull_request'
         env:
-          PLAN: "terraform\n${{ steps.plan.outputs }}"
+          PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
@@ -99,7 +99,7 @@ jobs:
             
             *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ inputs.working_directory }}\`, Workflow: \`${{ github.workflow }}\`*`;
               
-            github.issues.createComment({
+            github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
