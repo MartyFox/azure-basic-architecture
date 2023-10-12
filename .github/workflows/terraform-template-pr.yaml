@@ -112,14 +112,14 @@ jobs:
             // Split the Terraform plan into chunks if it's too big and can't fit into the GitHub Action
             var plans = chunkSubstr(plan, maxGitHubBodyCharacters); 
             for (let i = 0; i < plans.length; i++) {
-              const output = `### Terraform Plan Output - Part # ${i + 1}
+              const output = `### Terraform Plan Output Part # ${i + 1}
               #### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
               #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
               #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
               #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
               <details><summary>Show Plan</summary>
               \`\`\`\n
-              ${plans[i]}\n
+              ${plans[i]}
               \`\`\`
               </details>
               *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ inputs.working_directory }}\`, Workflow: \`${{ github.workflow }}\`*`;   
@@ -129,5 +129,5 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 body: output
-              })
+            })
             }
