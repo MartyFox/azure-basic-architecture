@@ -117,14 +117,12 @@ jobs:
               #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
               #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
               #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
-              
-              *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ inputs.working_directory }}\`, Workflow: \`${{ github.workflow }}\`*`\`
-
               <details><summary>Show Plan</summary>
               \`\`\`\n
-              ${plans[i]}
+              ${plans[i]}\n
               \`\`\`
-              </details>;   
+              </details>
+              *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ inputs.working_directory }}\`, Workflow: \`${{ github.workflow }}\`*`;   
 
               await github.rest.issues.createComment({
                 issue_number: context.issue.number,
