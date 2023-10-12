@@ -120,7 +120,7 @@ jobs:
               <details><summary>Show Plan</summary>
               \`\`\`\n
               ${plans[i]}
-              \`\`\`
+              \`\`\`\n
               </details>
               *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ inputs.working_directory }}\`, Workflow: \`${{ github.workflow }}\`*`;   
 
