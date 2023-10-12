@@ -45,7 +45,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "rsi-frontend-vmss" {
       name                                   = "internal"
       primary                                = true
       subnet_id                              = lookup(module.rsi-vnet-fe.vnet_subnets_name_id, "frontend")
-      load_balancer_backend_address_pool_ids = module.fe-loadbalancer.azurerm_lb_backend_address_pool_id
+      load_balancer_backend_address_pool_ids = [module.fe-loadbalancer.azurerm_lb_backend_address_pool_id]
     }
   }
 }
