@@ -12,8 +12,9 @@ variable "environment" {
   type = string
 }
 
-# variable "admin_password" {
-#   description = "administrator password"
-#   type        = string
-#   sensitive   = true
-# }
+variable "admin_password" {
+  description = "administrator password"
+  default     = "C0mPl3xP@55"
+  type        = string
+  sensitive   = true
+}

@@ -26,6 +26,7 @@ Simple infrastructure for Azure architecture, includes use of Terraform and Gith
 | <a name="module_nsg-fe"></a> [nsg-fe](#module\_nsg-fe) | Azure/network-security-group/azurerm | 4.1.0 |
 | <a name="module_rsi-vnet-be"></a> [rsi-vnet-be](#module\_rsi-vnet-be) | Azure/vnet/azurerm | 4.1.0 |
 | <a name="module_rsi-vnet-fe"></a> [rsi-vnet-fe](#module\_rsi-vnet-fe) | Azure/vnet/azurerm | 4.1.0 |
+| <a name="module_vmss-fe"></a> [vmss-fe](#module\_vmss-fe) | Azure/vmss-cloudinit/azurerm | 1.1.0 |
 
 ## Resources
 
@@ -43,6 +44,7 @@ Simple infrastructure for Azure architecture, includes use of Terraform and Gith
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_environment"></a> [environment](#input\_environment) | n/a | `string` | n/a | yes |
+| <a name="input_admin_password"></a> [admin\_password](#input\_admin\_password) | administrator password | `string` | `"C0mPl3xP@55"` | no |
 | <a name="input_location"></a> [location](#input\_location) | n/a | `string` | `"uk south"` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | `{}` | no |
 
