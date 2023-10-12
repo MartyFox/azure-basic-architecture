@@ -66,8 +66,7 @@ module "fe-loadbalancer" {
   pip_name                               = "fe-lb-pip"
 
   lb_port = {
-    http  = ["80", "Tcp", "80"]
-    https = ["443", "Tcp", "80"]
+    http = ["80", "Tcp", "80"]
   }
 
   lb_probe = {
