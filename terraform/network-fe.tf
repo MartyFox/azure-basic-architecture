@@ -57,7 +57,7 @@ module "fe-loadbalancer" {
   lb_sku                = "Standard"
   pip_sku               = "Standard"
   pip_name              = "fe-lb-pip"
-  pip_domain_name_label = "rsi-${environment}"
+  pip_domain_name_label = "rsi-${var.environment}"
 
   lb_port = {
     http = ["80", "Tcp", "80"]
