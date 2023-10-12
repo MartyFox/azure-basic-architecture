@@ -77,10 +77,8 @@ jobs:
           ARM_TENANT_ID: ${{ secrets.TENANT_ID }}
         run: terraform plan -no-color -input=false -var-file="../environments/${{ inputs.environment }}.tfvars"
 
-      - name: Terraform Plan  
-        id: plan
-        continue-on-error: false
-        if: github.event_name == 'pull_request'
+      - name: output
+        id: output
         env:
           PLAN: "terraform\n${{ steps.plan.outputs }}"
         run: |
