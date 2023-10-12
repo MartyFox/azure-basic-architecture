@@ -6,11 +6,6 @@ terraform {
       source  = "hashicorp/azurerm"
       version = ">= 3.11"
     }
-
-    cloudinit = {
-      source  = "hashicorp/cloudinit"
-      version = ">=2.2.0"
-    }
   }
 
   backend "azurerm" {}
@@ -20,7 +15,4 @@ terraform {
 provider "azurerm" {
   skip_provider_registration = "true"
   features {}
-}
-
-provider "cloudinit" {
 }
