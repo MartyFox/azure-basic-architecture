@@ -49,5 +49,7 @@ Simple infrastructure for Azure architecture, includes use of Terraform and Gith
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_fe-subnets"></a> [fe-subnets](#output\_fe-subnets) | n/a |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
