@@ -5,7 +5,7 @@
 #   resource_group_name   = azurerm_resource_group.rsi.name
 #   location              = var.location
 
-#   vnet_subnet_id        = module.rsi-fe.vnet_subnets[1]
+#   vnet_subnet_id        = module.rsi-vnet-fe.vnet_subnets[1]
 #   vm_size               = "Standard_D2a_v4"
 #   cloudconfig_file      = "${path.module}/cloudconfig.tpl"
 #   admin_username        = "azureuser"
@@ -69,7 +69,7 @@
 
 #   ip_configuration {
 #     name                          = "internal"
-#     subnet_id                     = module.rsi-be.vnet_subnets[0]
+#     subnet_id                     = module.rsi-vnet-be.vnet_subnets[0]
 #     private_ip_address_allocation = "Dynamic"
 #   }
 
