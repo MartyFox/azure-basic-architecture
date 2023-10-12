@@ -1,5 +1,6 @@
 name: Terraform Deploy - template
- 
+run-name: Terraform Deployment for - ${{ inputs.environment }}
+
 on:
   workflow_call:
     inputs:
@@ -30,9 +31,8 @@ on:
         required: true
  
 jobs:
-  deploy-terraform:
-    name: terraform-${{ inputs.environment }}-deploy
-    environment: ${{ inputs.environment }}
+  terraform-prepare:
+    name: "Run Terraform Prep - ${{ inputs.environment }}"
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -45,7 +45,6 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
-          terraform_version: 1.5.3
           terraform_wrapper: false
  
       - name: Terraform Init
@@ -65,7 +64,47 @@ jobs:
           ARM_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
           ARM_SUBSCRIPTION_ID: ${{ secrets.SUBSCRIPTION_ID }}
           ARM_TENANT_ID: ${{ secrets.TENANT_ID }}
-        run: terraform plan -no-color -input=false -var-file="../environments/${{ inputs.environment }}.tfvars" -out tf.plan
+        run: terraform plan -no-color -input=false -var-file="../environments/${{ inputs.environment }}.tfvars" -out=${{ github.workspace }}/tf.plan
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: artifact
+          path: ${{ github.workspace }}/tf.plan
+          if-no-files-found: error
+
+  terraform-apply: 
+    name: "Run Terraform Apply - ${{ inputs.environment }}"
+    needs: terraform-prepare
+    environment: ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ inputs.working_directory }}
+  
+    steps:
+      - uses: actions/checkout@v2
+  
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_wrapper: false
+ 
+      - name: Terraform Init
+        id: init
+        env:
+          ARM_CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          ARM_SUBSCRIPTION_ID: ${{ secrets.SUBSCRIPTION_ID }}
+          ARM_TENANT_ID: ${{ secrets.TENANT_ID }}
+        run: terraform init -backend-config="resource_group_name=${{ secrets.BACKEND_TF_RG }}" -backend-config="storage_account_name=${{ secrets.BACKEND_TF_SA }}" -backend-config="container_name=${{ inputs.tfstate_container }}" -backend-config="key=${{ inputs.backend_tfstate_name }}.tfstate"
+
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: artifact
+          path: ${{ github.workspace }}/tf.plan
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main'
