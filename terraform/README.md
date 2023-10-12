@@ -24,8 +24,8 @@ Simple infrastructure for Azure architecture, includes use of Terraform and Gith
 | <a name="module_nsg-be"></a> [nsg-be](#module\_nsg-be) | Azure/network-security-group/azurerm | 4.1.0 |
 | <a name="module_nsg-fe"></a> [nsg-fe](#module\_nsg-fe) | Azure/network-security-group/azurerm | 4.1.0 |
 | <a name="module_nsg-public"></a> [nsg-public](#module\_nsg-public) | Azure/network-security-group/azurerm | 4.1.0 |
-| <a name="module_rsi-be"></a> [rsi-be](#module\_rsi-be) | Azure/vnet/azurerm | 4.1.0 |
-| <a name="module_rsi-fe"></a> [rsi-fe](#module\_rsi-fe) | Azure/vnet/azurerm | 4.1.0 |
+| <a name="module_rsi-vnet-be"></a> [rsi-vnet-be](#module\_rsi-vnet-be) | Azure/vnet/azurerm | 4.1.0 |
+| <a name="module_rsi-vnet-fe"></a> [rsi-vnet-fe](#module\_rsi-vnet-fe) | Azure/vnet/azurerm | 4.1.0 |
 
 ## Resources
 
