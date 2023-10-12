@@ -50,39 +50,39 @@ module "rsi-vnet-fe" {
 }
 
 
-# module "fe-loadbalancer" {
-#   source  = "Azure/loadbalancer/azurerm"
-#   version = "4.4.0"
+module "fe-loadbalancer" {
+  source  = "Azure/loadbalancer/azurerm"
+  version = "4.4.0"
 
-#   resource_group_name                    = azurerm_resource_group.rsi.name
-#   location                               = var.location
-#   name                                   = "fe-lb"
-#   type                                   = "private"
-#   frontend_subnet_id                     = module.rsi-vnet-fe.vnet_subnets[0]
-#   frontend_private_ip_address_allocation = "Static"
-#   frontend_private_ip_address            = cidrhost(local.subnet_addresses["public"], 10)
-#   lb_sku                                 = "Standard"
-#   pip_sku                                = "Standard"
-#   pip_name                               = "fe-lb-pip"
+  resource_group_name                    = azurerm_resource_group.rsi.name
+  location                               = var.location
+  name                                   = "fe-lb"
+  type                                   = "private"
+  frontend_subnet_id                     = module.rsi-vnet-fe.vnet_subnets[0]
+  frontend_private_ip_address_allocation = "Static"
+  frontend_private_ip_address            = cidrhost(local.subnet_addresses["public"], 10)
+  lb_sku                                 = "Standard"
+  pip_sku                                = "Standard"
+  pip_name                               = "fe-lb-pip"
 
-#   lb_port = {
-#     http  = ["80", "Tcp", "80"]
-#     https = ["443", "Tcp", "80"]
-#   }
+  lb_port = {
+    http  = ["80", "Tcp", "80"]
+    https = ["443", "Tcp", "80"]
+  }
 
-#   lb_probe = {
-#     http = ["Tcp", "80", ""]
-#   }
+  lb_probe = {
+    http = ["Tcp", "80", ""]
+  }
 
-#   tags = merge(
-#     local.default_tags,
-#     tomap({
-#       "Component" = "Frontend"
-#     })
-#   )
+  tags = merge(
+    local.default_tags,
+    tomap({
+      "Component" = "Frontend"
+    })
+  )
 
-#   depends_on = [
-#     azurerm_resource_group.rsi,
-#     module.rsi-vnet-fe
-#   ]
-# }
+  depends_on = [
+    azurerm_resource_group.rsi,
+    module.rsi-vnet-fe
+  ]
+}
