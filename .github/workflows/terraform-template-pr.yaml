@@ -1,5 +1,6 @@
-name: Terraform Plan - PR only
- 
+name: Terraform Plan - PR only - template
+run-name: PR Plan for - ${{ inputs.environment }}
+
 on:
   workflow_call:
     inputs:
@@ -32,7 +33,7 @@ on:
 
 jobs:
   plan-terraform:
-    name: terraform-${{ inputs.environment }}-deploy
+    name: terraform-${{ inputs.environment }}-pr-plan
     environment: ${{ inputs.environment }}
     runs-on: ubuntu-latest
     defaults:
@@ -46,7 +47,6 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
-          terraform_version: 1.5.3
           terraform_wrapper: false
  
       - name: Run terraform format check
