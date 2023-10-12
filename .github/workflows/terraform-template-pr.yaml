@@ -120,8 +120,9 @@ jobs:
               <details><summary>Show Plan</summary>
               \`\`\`
               ${plans[i]}
-              </details>
               \`\`\`
+              </details>
+              
               *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ inputs.working_directory }}\`, Workflow: \`${{ github.workflow }}\`*`;   
 
               await github.rest.issues.createComment({
