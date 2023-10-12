@@ -22,16 +22,14 @@ module "rsi-vnet-fe" {
 
   use_for_each    = true
   address_space   = [local.vnet_address_prefixes["rsi-fe"]]
-  subnet_prefixes = [local.subnet_addresses["public"], local.subnet_addresses["frontend"], local.subnet_addresses["azurebastion"]]
-  subnet_names    = ["public", "frontend", "AzureBastionSubnet"]
+  subnet_prefixes = [local.subnet_addresses["frontend"], local.subnet_addresses["azurebastion"]]
+  subnet_names    = ["frontend", "AzureBastionSubnet"]
 
   nsg_ids = {
-    public   = module.nsg-public.network_security_group_id
     frontend = module.nsg-fe.network_security_group_id
   }
 
   route_tables_ids = {
-    public   = azurerm_route_table.rsi-routetable-fe.id
     frontend = azurerm_route_table.rsi-routetable-fe.id
   }
 
@@ -54,16 +52,12 @@ module "fe-loadbalancer" {
   source  = "Azure/loadbalancer/azurerm"
   version = "4.4.0"
 
-  resource_group_name                    = azurerm_resource_group.rsi.name
-  location                               = var.location
-  name                                   = "fe-lb"
-  type                                   = "private"
-  frontend_subnet_id                     = lookup(module.rsi-vnet-fe.vnet_subnets_name_id, "public")
-  frontend_private_ip_address_allocation = "Static"
-  frontend_private_ip_address            = cidrhost(local.subnet_addresses["public"], 10)
-  lb_sku                                 = "Standard"
-  pip_sku                                = "Standard"
-  pip_name                               = "fe-lb-pip"
+  resource_group_name = azurerm_resource_group.rsi.name
+  location            = var.location
+  name                = "fe-lb"
+  lb_sku              = "Standard"
+  pip_sku             = "Standard"
+  pip_name            = "fe-lb-pip"
 
   lb_port = {
     http = ["80", "Tcp", "80"]
