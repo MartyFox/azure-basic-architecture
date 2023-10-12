@@ -42,7 +42,6 @@ module "rsi-vnet-fe" {
 
   depends_on = [
     azurerm_route_table.rsi-routetable-be,
-    module.nsg-public,
     module.nsg-fe
   ]
 }
