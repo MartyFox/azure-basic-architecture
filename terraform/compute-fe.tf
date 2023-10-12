@@ -6,7 +6,7 @@ data "cloudinit_config" "vmss-fe-config" {
     filename     = "cloudconfig.yaml"
     content_type = "text/cloud-config"
 
-    content = file("cloudconfig.yaml")
+    content = file("${path.module}/cloudconfig.yaml")
   }
 }
 
