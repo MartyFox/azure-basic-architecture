@@ -1,7 +1,6 @@
-name: 'Terraform Deploy'
+name: 'Terraform Pull Request Plan'
  
 on:
-  push:
   pull_request:
     branches:
       - main
@@ -10,8 +9,16 @@ on:
       - 'environments/**.tfvars'
       - '.github/workflows/pullrequest.yaml'
 
+env:
+  TF_LOG: INFO
+
+permissions:
+  contents: read
+  pull-requests: write
+  
 jobs:
   terraform:
+    name: 'Terraform'
     uses: ./.github/workflows/terraform-template-pr.yaml
     strategy:
       matrix:
