@@ -1,4 +1,4 @@
-name: Terraform Plan - PR only
+name: Terraform Pull Request Plan - template
  
 on:
   workflow_call:
