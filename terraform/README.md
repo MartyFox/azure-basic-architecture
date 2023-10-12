@@ -20,7 +20,6 @@ Simple infrastructure for Azure architecture, includes use of Terraform and Gith
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_fe-loadbalancer"></a> [fe-loadbalancer](#module\_fe-loadbalancer) | Azure/loadbalancer/azurerm | 4.4.0 |
 | <a name="module_nsg-be"></a> [nsg-be](#module\_nsg-be) | Azure/network-security-group/azurerm | 4.1.0 |
 | <a name="module_nsg-fe"></a> [nsg-fe](#module\_nsg-fe) | Azure/network-security-group/azurerm | 4.1.0 |
 | <a name="module_nsg-public"></a> [nsg-public](#module\_nsg-public) | Azure/network-security-group/azurerm | 4.1.0 |
@@ -34,8 +33,6 @@ Simple infrastructure for Azure architecture, includes use of Terraform and Gith
 | [azurerm_resource_group.rsi](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_route_table.rsi-routetable-be](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/route_table) | resource |
 | [azurerm_route_table.rsi-routetable-fe](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/route_table) | resource |
-| [azurerm_virtual_network_peering.rsi-be-to-fe](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_network_peering) | resource |
-| [azurerm_virtual_network_peering.rsi-fe-to-be](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_network_peering) | resource |
 
 ## Inputs
 
