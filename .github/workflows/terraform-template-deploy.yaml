@@ -65,7 +65,7 @@ jobs:
           ARM_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
           ARM_SUBSCRIPTION_ID: ${{ secrets.SUBSCRIPTION_ID }}
           ARM_TENANT_ID: ${{ secrets.TENANT_ID }}
-        run: terraform plan -no-color -input=false -var-file="../environments/${{ inputs.environment }}.tfvars"
+        run: terraform plan -no-color -input=false -var-file="../environments/${{ inputs.environment }}.tfvars" -out tf.plan
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main'
@@ -76,4 +76,4 @@ jobs:
           ARM_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
           ARM_SUBSCRIPTION_ID: ${{ secrets.SUBSCRIPTION_ID }}
           ARM_TENANT_ID: ${{ secrets.TENANT_ID }}
-        run: terraform apply -auto-approve -var-file="../environments/${{ inputs.environment }}.tfvars"
+        run: terraform apply "tf.plan" -auto-approve -var-file="../environments/${{ inputs.environment }}.tfvars"

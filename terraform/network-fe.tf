@@ -12,12 +12,13 @@ resource "azurerm_route_table" "rsi-routetable-fe" {
   )
 }
 
-module "rsi-fe" {
+module "rsi-vnet-fe" {
   source  = "Azure/vnet/azurerm"
   version = "4.1.0"
 
   resource_group_name = azurerm_resource_group.rsi.name
   vnet_location       = var.location
+  vnet_name           = "rsi-fe-vnet"
 
   use_for_each    = true
   address_space   = [local.vnet_address_prefixes["rsi-fe"]]
@@ -40,6 +41,12 @@ module "rsi-fe" {
       "Component" = "Frontend"
     })
   )
+
+  depends_on = [
+    azurerm_route_table.rsi-routetable-be,
+    module.nsg-public,
+    module.nsg-fe
+  ]
 }
 
 
@@ -47,14 +54,16 @@ module "fe-loadbalancer" {
   source  = "Azure/loadbalancer/azurerm"
   version = "4.4.0"
 
-  resource_group_name = azurerm_resource_group.rsi.name
-  location            = var.location
-  name                = "fe-lb"
-  type                = "public"
-  frontend_subnet_id  = module.rsi-fe.vnet_subnets[0]
-  lb_sku              = "Standard"
-  pip_sku             = "Standard"
-  pip_name            = "fe-lb-pip"
+  resource_group_name                    = azurerm_resource_group.rsi.name
+  location                               = var.location
+  name                                   = "fe-lb"
+  type                                   = "private"
+  frontend_subnet_id                     = module.rsi-vnet-fe.vnet_subnets[0]
+  frontend_private_ip_address_allocation = "Static"
+  frontend_private_ip_address            = cidrhost(local.subnet_addresses["public"], 10)
+  lb_sku                                 = "Standard"
+  pip_sku                                = "Standard"
+  pip_name                               = "fe-lb-pip"
 
   lb_port = {
     http  = ["80", "Tcp", "80"]
@@ -74,6 +83,6 @@ module "fe-loadbalancer" {
 
   depends_on = [
     azurerm_resource_group.rsi,
-    module.rsi-fe
+    module.rsi-vnet-fe
   ]
 }

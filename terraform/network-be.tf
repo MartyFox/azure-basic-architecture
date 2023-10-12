@@ -11,12 +11,13 @@ resource "azurerm_route_table" "rsi-routetable-be" {
   }))
 }
 
-module "rsi-be" {
+module "rsi-vnet-be" {
   source  = "Azure/vnet/azurerm"
   version = "4.1.0"
 
   resource_group_name = azurerm_resource_group.rsi.name
   vnet_location       = var.location
+  vnet_name           = "rsi-be-vnet"
 
   use_for_each    = true
   address_space   = [local.vnet_address_prefixes["rsi-be"]]
@@ -36,5 +37,10 @@ module "rsi-be" {
     tomap({
       "Component" = "Backend"
   }))
+
+  depends_on = [
+    azurerm_route_table.rsi-routetable-be,
+    module.nsg-be
+  ]
 }
 
