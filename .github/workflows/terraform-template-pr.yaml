@@ -1,5 +1,4 @@
 name: Terraform Plan - PR only - template
-run-name: PR Plan for - ${{ inputs.environment }}
 
 on:
   workflow_call:

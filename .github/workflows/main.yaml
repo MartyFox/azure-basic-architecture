@@ -3,7 +3,7 @@ name: 'Terraform Deploy'
 on:
   push:
     branches:
-    - main
+      - main
     paths:
       - 'terraform/**.tf'
       - 'environments/**.tfvars'
