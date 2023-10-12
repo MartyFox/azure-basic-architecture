@@ -121,7 +121,7 @@ jobs:
               
               \`\`\`terraform\n
               ${plans[i]}
-              
+              \`\`\`
               </details>
               
               *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ inputs.working_directory }}\`, Workflow: \`${{ github.workflow }}\`*`;   
