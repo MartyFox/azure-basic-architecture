@@ -20,6 +20,7 @@ Simple infrastructure for Azure architecture, includes use of Terraform and Gith
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_bastion"></a> [bastion](#module\_bastion) | ../modules/az-bastion | n/a |
 | <a name="module_fe-loadbalancer"></a> [fe-loadbalancer](#module\_fe-loadbalancer) | Azure/loadbalancer/azurerm | 4.4.0 |
 | <a name="module_nsg-be"></a> [nsg-be](#module\_nsg-be) | Azure/network-security-group/azurerm | 4.1.0 |
 | <a name="module_nsg-fe"></a> [nsg-fe](#module\_nsg-fe) | Azure/network-security-group/azurerm | 4.1.0 |
@@ -31,6 +32,7 @@ Simple infrastructure for Azure architecture, includes use of Terraform and Gith
 
 | Name | Type |
 |------|------|
+| [azurerm_resource_group.bastion](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.rsi](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_route_table.rsi-routetable-be](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/route_table) | resource |
 | [azurerm_route_table.rsi-routetable-fe](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/route_table) | resource |
