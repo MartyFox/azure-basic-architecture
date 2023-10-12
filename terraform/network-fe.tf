@@ -58,7 +58,7 @@ module "fe-loadbalancer" {
   location                               = var.location
   name                                   = "fe-lb"
   type                                   = "private"
-  frontend_subnet_id                     = module.rsi-vnet-fe.vnet_subnets[0]
+  frontend_subnet_id                     = lookup(module.rsi-vnet-fe.vnet_subnets_name_id, "public")
   frontend_private_ip_address_allocation = "Static"
   frontend_private_ip_address            = cidrhost(local.subnet_addresses["public"], 10)
   lb_sku                                 = "Standard"
