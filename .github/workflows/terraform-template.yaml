@@ -18,7 +18,7 @@ on:
       tf_version:
         required: true
         type: string
-        defauilt: 1.5.7
+        default: 1.5.7
     secrets:
       CLIENT_ID:
         required: true
