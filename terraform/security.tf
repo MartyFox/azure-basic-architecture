@@ -15,8 +15,8 @@ module "nsg-fe" {
       access                       = "Allow"
       protocol                     = "*"
       destination_port_range       = "*"
-      source_address_prefixes      = module.rsi-vnet-fe.vnet_address_space
-      destination_address_prefixes = module.rsi-vnet-fe.vnet_address_space
+      source_address_prefixes      = [local.vnet_address_prefixes["rsi-fe"]]
+      destination_address_prefixes = [local.vnet_address_prefixes["rsi-fe"]]
       description                  = "Allow Local Networks"
     },
     {
@@ -67,8 +67,8 @@ module "nsg-be" {
       access                       = "Allow"
       protocol                     = "*"
       destination_port_range       = "*"
-      source_address_prefixes      = module.rsi-vnet-be.vnet_address_space
-      destination_address_prefixes = module.rsi-vnet-be.vnet_address_space
+      source_address_prefixes      = [local.vnet_address_prefixes["rsi-be"]]
+      destination_address_prefixes = [local.vnet_address_prefixes["rsi-be"]]
       description                  = "Allow Local Networks"
     },
     {
