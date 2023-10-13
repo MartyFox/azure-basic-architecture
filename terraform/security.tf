@@ -24,7 +24,7 @@ module "nsg-fe" {
       priority               = "201"
       direction              = "Inbound"
       access                 = "Allow"
-      protocol               = "Tcp"
+      protocol               = "*"
       destination_port_range = "*"
       source_address_prefix  = "AzureLoadBalancer"
       description            = "AzureLoadBalancerAllowed"
@@ -34,7 +34,7 @@ module "nsg-fe" {
       priority               = "4096"
       direction              = "Inbound"
       access                 = "Deny"
-      protocol               = "Tcp"
+      protocol               = "*"
       destination_port_range = "*"
       description            = "default-deny"
     }
@@ -78,7 +78,7 @@ module "nsg-be" {
       access                 = "Allow"
       protocol               = "Tcp"
       destination_port_range = "22"
-      source_address_prefix  = local.subnet_addresses["frontend"]
+      source_address_prefix  = [local.vnet_address_prefixes["rsi-fe"]]
       description            = "FrontendAllowSSH"
     },
     {
@@ -106,7 +106,7 @@ module "nsg-be" {
       priority               = "4096"
       direction              = "Inbound"
       access                 = "Deny"
-      protocol               = "Tcp"
+      protocol               = "*"
       destination_port_range = "*"
       description            = "default-deny"
     }
