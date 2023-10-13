@@ -72,14 +72,14 @@ module "nsg-be" {
       description                  = "Allow Local Networks"
     },
     {
-      name                    = "SSH-FE"
-      priority                = "201"
-      direction               = "Inbound"
-      access                  = "Allow"
-      protocol                = "Tcp"
-      destination_port_range  = "22"
-      source_address_prefixes = local.subnet_addresses["azurebastion"]
-      description             = "AzureBastionSSH"
+      name                   = "SSH-FE"
+      priority               = "201"
+      direction              = "Inbound"
+      access                 = "Allow"
+      protocol               = "Tcp"
+      destination_port_range = "22"
+      source_address_prefix  = local.subnet_addresses["azurebastion"]
+      description            = "AzureBastionSSH"
     },
     {
       name                   = "ICMP-FE"
