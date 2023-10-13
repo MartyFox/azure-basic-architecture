@@ -36,5 +36,5 @@ jobs:
       CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
       SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
       TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-      BACKEND_TF_RG: ${{ secrets.BACKEND_RG }}
-      BACKEND_TF_SA: ${{ secrets.BACKEND_SA }}
+      backend_tf_rg: ${{ secrets.BACKEND_RG }}
+      backend_tf_sa: ${{ secrets.BACKEND_SA }}
