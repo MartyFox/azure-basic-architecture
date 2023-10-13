@@ -47,7 +47,7 @@ runs:
       id: fmt
       shell: bash
       working-directory: ${{ inputs.working_directory }}
-      run: echo hello and ${{ inputs.subscription_id }}
+      run: echo hello and ${{ inputs.subscription_id }} and ${{ inputs.client_id }}-backend-config="resource_group_name=${{ inputs.backend_tf_rg }}"
 
 
     # - uses: hashicorp/setup-terraform@v2
