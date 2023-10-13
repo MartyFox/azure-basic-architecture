@@ -45,16 +45,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
-      - uses: hashicorp/setup-terraform@v2
-        with:
-          # Actions cannot access secrets so pass them in as inputs
-          terraform_version: ${{ inputs.tf_version }}
-          terraform_wrapper: false
-
       - name: Terraform PR
         id: terraform-pr
         uses: ./.github/actions/terraform-pr
         with:
+            tf_version: ${{ inputs.tf_version }}
             client_id: ${{ secrets.CLIENT_ID }}
             client_secret: ${{ secrets.CLIENT_SECRET }}
             subscription_id: ${{ secrets.SUBSCRIPTION_ID }}
@@ -79,16 +74,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: hashicorp/setup-terraform@v2
-        with:
-          # Actions cannot access secrets so pass them in as inputs
-          terraform_version: ${{ inputs.tf_version }}
-          terraform_wrapper: false
-
       - name: Terraform deploy
         id: terraform-deploy
         uses: ./.github/actions/terraform-deploy
         with:
+            tf_version: ${{ inputs.tf_version }}
             client_id: ${{ secrets.CLIENT_ID }}
             client_secret: ${{ secrets.CLIENT_SECRET }}
             subscription_id: ${{ secrets.SUBSCRIPTION_ID }}
@@ -112,16 +102,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: hashicorp/setup-terraform@v2
-        with:
-          # Actions cannot access secrets so pass them in as inputs
-          terraform_version: ${{ inputs.tf_version }}
-          terraform_wrapper: false
-
       - name: Terraform deploy
         id: terraform-deploy
         uses: ./.github/actions/terraform-deploy
         with:
+            tf_version: ${{ inputs.tf_version }}
             client_id: ${{ secrets.CLIENT_ID }}
             client_secret: ${{ secrets.CLIENT_SECRET }}
             subscription_id: ${{ secrets.SUBSCRIPTION_ID }}
