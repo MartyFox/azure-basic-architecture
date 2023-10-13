@@ -16,7 +16,6 @@ on:
         required: true
         type: string
       tf_version:
-        required: true
         type: string
         default: 1.5.7
     secrets:
@@ -67,7 +66,7 @@ jobs:
   terraform-deploy-dev:
     name: "Run Terraform Prep - ${{ inputs.environment }}"
     environment: ${{ inputs.environment }}]
-    if: (github.event_name != 'pull_request' && inputs.environment == "dev")
+    if: (github.event_name != 'pull_request' && inputs.environment == 'dev')
     runs-on: ubuntu-latest
     defaults:
       run:
