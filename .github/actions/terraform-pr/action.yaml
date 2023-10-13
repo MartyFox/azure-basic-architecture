@@ -96,10 +96,7 @@ runs:
       run: terraform show -no-color tf.plan 2>&1 > /tmp/plan.txt
 
 
-    - name: Add Plan to PR
-      id: comment
-      shell: bash
-      uses: actions/github-script@v6
+    - uses: actions/github-script@v6
       with:
         github-token: ${{ inputs.github_token }}
         script: |
