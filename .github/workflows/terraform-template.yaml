@@ -64,7 +64,7 @@ jobs:
             
   terraform-deploy-dev:
     name: "Run Terraform Prep Dev"
-    environment: ${{ inputs.environment }}]
+    environment: 'dev'
     if: ${{ github.event_name != 'pull_request' && inputs.environment == 'dev' }}
     runs-on: ubuntu-latest
     defaults:
@@ -92,7 +92,7 @@ jobs:
 
   terraform-deploy-prod:
     name: "Run Terraform Prep Prod"
-    environment: ${{ inputs.environment }}
+    environment: 'prod'
     if: ${{ github.event_name != 'pull_request' && inputs.environment == 'prod' && github.ref == 'ref/heads/main' }}
     runs-on: ubuntu-latest
     defaults:
