@@ -64,7 +64,7 @@ module "fe-loadbalancer" {
   }
 
   lb_probe = {
-    http = ["Tcp", "80", ""]
+    http = ["Http", "80", "/"]
   }
 
   tags = merge(
