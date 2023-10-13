@@ -1,0 +1,73 @@
+name: 'Terraform deploy composite'
+description: 'Runs a composite step action that sets up Terraform and plans and applies code'
+inputs:
+  tf_version:
+    required: false
+    type: number
+  client_id:
+    required: true
+    type: string
+  client_secret:
+    required: true
+    type: string
+  subscription_id:
+    required: true
+    type: string
+  tenant_id:
+    required: true
+    type: string
+  backend_tf_rg:
+    required: true
+    type: string
+  backend_tf_sa:
+    required: true
+    type: string
+  backend_tfstate_name:
+    required: true
+    type: string
+  tfstate_container:
+    required: true
+    type: string
+  environment:
+    required: true
+    type: string
+    
+runs:
+  using: "composite"
+  steps:
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: ${{ inputs.tf_version }}
+          terraform_wrapper: false
+ 
+      - name: Terraform Init
+        id: init
+        env:
+          ARM_CLIENT_ID: ${{ inputs.client_id }}
+          ARM_CLIENT_SECRET: ${{ inputs.client_secret }}
+          ARM_SUBSCRIPTION_ID: ${{ inputs.subscription_id }}
+          ARM_TENANT_ID: ${{ inputs.tenant_id }}
+        run: terraform init -backend-config="resource_group_name=${{ inputs.backend_tf_rg }}" -backend-config="storage_account_name=${{ inputs.backend_tf_sa }}" -backend-config="container_name=${{ inputs.tfstate_container }}" -backend-config="key=${{ inputs.backend_tfstate_name }}.tfstate"
+        
+      - name: Terraform Plan
+        id: plan
+        continue-on-error: false
+        env:
+          ARM_CLIENT_ID: ${{ inputs.client_id }}
+          ARM_CLIENT_SECRET: ${{ inputs.client_secret }}
+          ARM_SUBSCRIPTION_ID: ${{ inputs.subscription_id }}
+          ARM_TENANT_ID: ${{ inputs.tenant_id }}
+        run: terraform plan -no-color -input=false -var-file="../environments/${{ inputs.environment }}.tfvars" -out=tf.plan
+
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main'
+        id: apply
+        continue-on-error: false
+        env:
+          ARM_CLIENT_ID: ${{ inputs.client_id }}
+          ARM_CLIENT_SECRET: ${{ inputs.client_secret }}
+          ARM_SUBSCRIPTION_ID: ${{ inputs.subscription_id }}
+          ARM_TENANT_ID: ${{ inputs.tenant_id }}
+        run: terraform apply "tf.plan"

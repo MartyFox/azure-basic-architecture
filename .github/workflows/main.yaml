@@ -18,7 +18,7 @@ permissions:
 jobs:
   terraform:
     name: 'Terraform'
-    uses: ./.github/workflows/terraform-template-deploy.yaml
+    uses: ./.github/workflows/terraform-template.yaml
     strategy:
       matrix:
         environment: 
