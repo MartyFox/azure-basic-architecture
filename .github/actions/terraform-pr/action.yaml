@@ -45,7 +45,7 @@ runs:
     - uses: hashicorp/setup-terraform@v2
       with:
         # Actions cannot access secrets so pass them in as inputs
-        terraform_version: ${{ inputs.tf_version}}
+        terraform_version: ${{ inputs.tf_version }}
         terraform_wrapper: false
 
     - name: Run terraform format check
@@ -96,11 +96,7 @@ runs:
       run: terraform show -no-color tf.plan 2>&1 > /tmp/plan.txt
 
 
-    - name: Add Plan to PR
-      id: comment
-      shell: bash
-      working-directory: ${{ inputs.working_directory }}
-      uses: actions/github-script@v6
+    - uses: actions/github-script@v6
       with:
         github-token: ${{ inputs.github_token }}
         script: |
