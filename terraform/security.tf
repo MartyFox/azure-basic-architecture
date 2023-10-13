@@ -9,8 +9,19 @@ module "nsg-fe" {
 
   custom_rules = [
     {
+      name                         = "VirtualNetwork"
+      priority                     = "101"
+      direction                    = "Inbound"
+      access                       = "Allow"
+      protocol                     = "*"
+      destination_port_range       = "*"
+      source_address_prefixes      = module.rsi-vnet-fe.vnet_address_space
+      destination_address_prefixes = module.rsi-vnet-fe.vnet_address_space
+      description                  = "Allow Local Networks"
+    },
+    {
       name                   = "AzureLoadBalancer"
-      priority               = "101"
+      priority               = "201"
       direction              = "Inbound"
       access                 = "Allow"
       protocol               = "Tcp"
@@ -50,8 +61,19 @@ module "nsg-be" {
 
   custom_rules = [
     {
+      name                         = "VirtualNetwork"
+      priority                     = "101"
+      direction                    = "Inbound"
+      access                       = "Allow"
+      protocol                     = "*"
+      destination_port_range       = "*"
+      source_address_prefixes      = module.rsi-vnet-be.vnet_address_space
+      destination_address_prefixes = module.rsi-vnet-be.vnet_address_space
+      description                  = "Allow Local Networks"
+    },
+    {
       name                   = "SSH-FE"
-      priority               = "101"
+      priority               = "201"
       direction              = "Inbound"
       access                 = "Allow"
       protocol               = "Tcp"
@@ -61,7 +83,7 @@ module "nsg-be" {
     },
     {
       name                   = "ICMP-FE"
-      priority               = "102"
+      priority               = "202"
       direction              = "Inbound"
       access                 = "Allow"
       protocol               = "Icmp"
@@ -71,7 +93,7 @@ module "nsg-be" {
     },
     {
       name                   = "MySQL-DB-FE"
-      priority               = "201"
+      priority               = "301"
       direction              = "Inbound"
       access                 = "Allow"
       protocol               = "Tcp"
