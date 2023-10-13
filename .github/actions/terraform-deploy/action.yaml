@@ -7,7 +7,7 @@ inputs:
     type: string
   tf_version:
     required: true
-    type: number
+    type: string
   client_id:
     required: true
     type: string
@@ -35,7 +35,7 @@ inputs:
   environment:
     required: true
     type: string
-    
+
 runs:
   using: "composite"
   steps:
@@ -44,7 +44,7 @@ runs:
         # Actions cannot access secrets so pass them in as inputs
         terraform_version: ${{ inputs.tf_version }}
         terraform_wrapper: false
- 
+
     - name: Terraform Init
       id: init
       shell: bash
@@ -55,8 +55,8 @@ runs:
         ARM_SUBSCRIPTION_ID: ${{ inputs.subscription_id }}
         ARM_TENANT_ID: ${{ inputs.tenant_id }}
       run: terraform init -backend-config="resource_group_name=${{ inputs.backend_tf_rg }}" -backend-config="storage_account_name=${{ inputs.backend_tf_sa }}" -backend-config="container_name=${{ inputs.tfstate_container }}" -backend-config="key=${{ inputs.backend_tfstate_name }}.tfstate"
-      
-    - name: Terraform Plan
+
+    - name: Terraform Plan  
       id: plan
       shell: bash
       working-directory: ${{ inputs.working_directory }}
@@ -66,7 +66,7 @@ runs:
         ARM_CLIENT_SECRET: ${{ inputs.client_secret }}
         ARM_SUBSCRIPTION_ID: ${{ inputs.subscription_id }}
         ARM_TENANT_ID: ${{ inputs.tenant_id }}
-      run: terraform plan -no-color -input=false -var-file="../environments/${{ inputs.environment }}.tfvars" -out=tf.plan
+      run: terraform plan -no-color -input=false -var-file="../environments/${{ inputs.environment }}.tfvars" -out tf.plan
 
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main'
