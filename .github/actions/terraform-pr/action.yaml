@@ -1,8 +1,12 @@
 name: 'Terraform PR composite'
 description: 'Runs a composite step action that sets up Terraform and publishes plan output to a PR'
+
 inputs:
+  working_directory:
+    required: true
+    type: string
   tf_version:
-    required: false
+    required: true
     type: string
   client_id:
     required: true
@@ -34,101 +38,107 @@ inputs:
   github_token: 
     required: true
     type: string
+
 runs:
   using: "composite"
-
   steps:
+    - name: Setup Terraform
+      id: setup
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: ${{ inputs.tf_version}}
+        terraform_wrapper: false
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v2
-        with:
-          terraform_version: 1.5.7
-          terraform_wrapper: false
- 
-      - name: Run terraform format check
-        id: fmt
-        shell: bash
-        run: terraform fmt -check -diff -recursive
+    - name: Run terraform format check
+      id: fmt
+      shell: bash
+      working-directory: ${{ inputs.working_directory }}
+      run: terraform fmt -check -diff -recursive
 
-      - name: Terraform Init
-        id: init
-        shell: bash
-        env:
-          ARM_CLIENT_ID: ${{ inputs.client_id }}
-          ARM_CLIENT_SECRET: ${{ inputs.client_secret }}
-          ARM_SUBSCRIPTION_ID: ${{ inputs.subscription_id }}
-          ARM_TENANT_ID: ${{ inputs.tenant_id }}
-        run: terraform init -backend-config="resource_group_name=${{ inputs.backend_tf_rg }}" -backend-config="storage_account_name=${{ inputs.backend_tf_sa }}" -backend-config="container_name=${{ inputs.tfstate_container }}" -backend-config="key=${{ inputs.backend_tfstate_name }}.tfstate"
+    - name: Terraform Init
+      id: init
+      shell: bash
+      working-directory: ${{ inputs.working_directory }}
+      env:
+        ARM_CLIENT_ID: ${{ inputs.client_id }}
+        ARM_CLIENT_SECRET: ${{ inputs.client_secret }}
+        ARM_SUBSCRIPTION_ID: ${{ inputs.subscription_id }}
+        ARM_TENANT_ID: ${{ inputs.tenant_id }}
+      run: terraform init -backend-config="resource_group_name=${{ inputs.backend_tf_rg }}" -backend-config="storage_account_name=${{ inputs.backend_tf_sa }}" -backend-config="container_name=${{ inputs.tfstate_container }}" -backend-config="key=${{ inputs.backend_tfstate_name }}.tfstate"
 
-      - name: Run terraform validate check
-        id: validate
-        shell: bash
-        run: terraform validate
+    - name: Run terraform validate check
+      id: validate
+      shell: bash
+      working-directory: ${{ inputs.working_directory }}
+      run: terraform validate
 
-      - name: Terraform Plan  
-        id: plan
-        shell: bash
-        continue-on-error: false
-        env:
-          ARM_CLIENT_ID: ${{ inputs.client_id }}
-          ARM_CLIENT_SECRET: ${{ inputs.client_secret }}
-          ARM_SUBSCRIPTION_ID: ${{ inputs.subscription_id }}
-          ARM_TENANT_ID: ${{ inputs.tenant_id }}
-        run: terraform plan -no-color -input=false -var-file="../environments/${{ inputs.environment }}.tfvars" -out tf.plan
+    - name: Terraform Plan  
+      id: plan
+      shell: bash
+      working-directory: ${{ inputs.working_directory }}
+      continue-on-error: false
+      env:
+        ARM_CLIENT_ID: ${{ inputs.client_id }}
+        ARM_CLIENT_SECRET: ${{ inputs.client_secret }}
+        ARM_SUBSCRIPTION_ID: ${{ inputs.subscription_id }}
+        ARM_TENANT_ID: ${{ inputs.tenant_id }}
+      run: terraform plan -no-color -input=false -var-file="../environments/${{ inputs.environment }}.tfvars" -out tf.plan
 
-      - name: Terraform Show
-        id: show
-        shell: bash
-        continue-on-error: false
-        env:
-          ARM_CLIENT_ID: ${{ inputs.client_id }}
-          ARM_CLIENT_SECRET: ${{ inputs.client_secret }}
-          ARM_SUBSCRIPTION_ID: ${{ inputs.subscription_id }}
-          ARM_TENANT_ID: ${{ inputs.tenant_id }}
-        run: terraform show -no-color tf.plan 2>&1 > /tmp/plan.txt
+    - name: Terraform Show
+      id: show
+      shell: bash
+      working-directory: ${{ inputs.working_directory }}
+      continue-on-error: false
+      env:
+        ARM_CLIENT_ID: ${{ inputs.client_id }}
+        ARM_CLIENT_SECRET: ${{ inputs.client_secret }}
+        ARM_SUBSCRIPTION_ID: ${{ inputs.subscription_id }}
+        ARM_TENANT_ID: ${{ inputs.tenant_id }}
+      run: terraform show -no-color tf.plan 2>&1 > /tmp/plan.txt
 
 
-      - name: Add Plan to PR
-        id: comment
-        shell: bash
-        uses: actions/github-script@v6
-        with:
-          github-token: ${{ inputs.github_token }}
-          script: |
-            const fs = require("fs");
-            const plan = fs.readFileSync("/tmp/plan.txt", "utf8");
-            const maxGitHubBodyCharacters = 65536;
+    - name: Add Plan to PR
+      id: comment
+      shell: bash
+      working-directory: ${{ inputs.working_directory }}
+      uses: actions/github-script@v6
+      with:
+        github-token: ${{ inputs.github_token }}
+        script: |
+          const fs = require("fs");
+          const plan = fs.readFileSync("/tmp/plan.txt", "utf8");
+          const maxGitHubBodyCharacters = 65536;
 
-            function chunkSubstr(str, size) {
-              const numChunks = Math.ceil(str.length / size)
-              const chunks = new Array(numChunks)
-              for (let i = 0, o = 0; i < numChunks; ++i, o += size) {
-                chunks[i] = str.substr(o, size)
-              }
-              return chunks
+          function chunkSubstr(str, size) {
+            const numChunks = Math.ceil(str.length / size)
+            const chunks = new Array(numChunks)
+            for (let i = 0, o = 0; i < numChunks; ++i, o += size) {
+              chunks[i] = str.substr(o, size)
             }
+            return chunks
+          }
 
-            // Split the Terraform plan into chunks if it's too big and can't fit into the GitHub Action
-            var plans = chunkSubstr(plan, maxGitHubBodyCharacters); 
-            for (let i = 0; i < plans.length; i++) {
-              const output = `### Terraform Plan Output Part # ${i + 1}
-              #### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
-              #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
-              #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
-              #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
-              <details><summary>Show Plan</summary>
-              
-              \`\`\`terraform\n
-              ${plans[i]}
-              \`\`\`
-              </details>
-              
-              *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ inputs.working_directory }}\`, Workflow: \`${{ github.workflow }}\`*`;   
+          // Split the Terraform plan into chunks if it's too big and can't fit into the GitHub Action
+          var plans = chunkSubstr(plan, maxGitHubBodyCharacters); 
+          for (let i = 0; i < plans.length; i++) {
+            const output = `### Terraform Plan Output Part # ${i + 1}
+            #### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
+            #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+            #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
+            #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+            <details><summary>Show Plan</summary>
+            
+            \`\`\`terraform\n
+            ${plans[i]}
+            \`\`\`
+            </details>
+            
+            *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ inputs.working_directory }}\`, Workflow: \`${{ github.workflow }}\`*`;   
 
-              await github.rest.issues.createComment({
-                issue_number: context.issue.number,
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                body: output
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
             })
-            }
+          }

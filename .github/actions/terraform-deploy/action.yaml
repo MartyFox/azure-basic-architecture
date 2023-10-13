@@ -1,8 +1,12 @@
 name: 'Terraform deploy composite'
 description: 'Runs a composite step action that sets up Terraform and plans and applies code'
+
 inputs:
+  working_directory:
+    required: true
+    type: string
   tf_version:
-    required: false
+    required: true
     type: number
   client_id:
     required: true
@@ -45,6 +49,7 @@ runs:
       - name: Terraform Init
         id: init
         shell: bash
+        working-directory: ${{ inputs.working_directory }}
         env:
           ARM_CLIENT_ID: ${{ inputs.client_id }}
           ARM_CLIENT_SECRET: ${{ inputs.client_secret }}
@@ -55,6 +60,7 @@ runs:
       - name: Terraform Plan
         id: plan
         shell: bash
+        working-directory: ${{ inputs.working_directory }}
         continue-on-error: false
         env:
           ARM_CLIENT_ID: ${{ inputs.client_id }}
@@ -67,6 +73,7 @@ runs:
         if: github.ref == 'refs/heads/main'
         id: apply
         shell: bash
+        working-directory: ${{ inputs.working_directory }}
         continue-on-error: false
         env:
           ARM_CLIENT_ID: ${{ inputs.client_id }}
