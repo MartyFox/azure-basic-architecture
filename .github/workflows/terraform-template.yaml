@@ -76,7 +76,7 @@ jobs:
 
       - name: Terraform deploy
         id: terraform-deploy
-        uses: ./.github/actions/terraform-test
+        uses: ./.github/actions/terraform-deploy
         with:
             tf_version: ${{ inputs.tf_version }}
             client_id: ${{ secrets.CLIENT_ID }}
@@ -104,7 +104,7 @@ jobs:
 
       - name: Terraform deploy
         id: terraform-deploy
-        uses: ./.github/actions/terraform-test
+        uses: ./.github/actions/terraform-deploy
         with:
             tf_version: ${{ inputs.tf_version }}
             client_id: ${{ secrets.CLIENT_ID }}
