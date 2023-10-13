@@ -5,14 +5,22 @@ packages:
   - php
 write_files:
   - owner: www-data:www-data
-    path: /var/www/html/index.html
+    path: /var/www/html/index.php
     permissions: '0644'
     content: |
       <!DOCTYPE html>
-      <html>  
+      <html>
         <body>
-          <p><?php echo "Hello Red Squad from host:".gethostname(); ?></p>
+          <?php
+            $HOSTNAME = gethostname();
+            echo "<h2>Hello Red Squad from host: <b>$HOSTNAME</b></h2>";
+          ?>
         </body>
       </html>
+  - owner: www-data:www-data
+    path: /var/www/html/.htaccess
+    permissions: '0644'
+    content: |
+      DirectoryIndex index.php
 runcmd:
   - systemctl restart apache2
