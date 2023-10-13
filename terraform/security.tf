@@ -67,8 +67,8 @@ module "nsg-be" {
       access                       = "Allow"
       protocol                     = "*"
       destination_port_range       = "*"
-      source_address_prefixes      = local.vnet_address_prefixes["rsi-be"]
-      destination_address_prefixes = local.vnet_address_prefixes["rsi-be"]
+      source_address_prefixes      = [local.vnet_address_prefixes["rsi-be"]]
+      destination_address_prefixes = [local.vnet_address_prefixes["rsi-be"]]
       description                  = "Allow Local Networks"
     },
     {
@@ -78,7 +78,7 @@ module "nsg-be" {
       access                 = "Allow"
       protocol               = "Tcp"
       destination_port_range = "22"
-      source_address_prefix  = [local.vnet_address_prefixes["rsi-fe"]]
+      source_address_prefix  = local.vnet_address_prefixes["rsi-fe"]
       description            = "FrontendAllowSSH"
     },
     {
