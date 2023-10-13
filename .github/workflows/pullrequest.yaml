@@ -22,8 +22,7 @@ jobs:
     uses: ./.github/workflows/terraform-template.yaml
     strategy:
       matrix:
-        environment: 
-          - 'dev'
+        environment: ['dev']
       fail-fast: true
       max-parallel: 1
     with:
