@@ -1,41 +1,18 @@
 #cloud-config
 package_upgrade: true
 packages:
-  - nginx
-  - nodejs
-  - npm
+  - apache2
+  - php
 write_files:
-  - owner: root:root
-    path: /var/www/html/index.js
+  - owner: www-data:www-data
+    path: /var/www/html/index.html
     permissions: '0644'
     content: |
-      var express = require('express')
-      var app = express()
-      var os = require('os');
-      app.get('/', function (req, res) {
-        res.send('Hello Red Squad from host ' + os.hostname() + '!')
-      })
-      app.listen(3000, function () {
-        console.log('Hello world app listening on port 3000!')
-      })
-  - owner: www-data:www-data
-    path: /etc/nginx/sites-available/default
-    content: |
-      server {
-        listen 80;
-        location / {
-          proxy_pass http://localhost:3000;
-          proxy_http_version 1.1;
-          proxy_set_header Upgrade $http_upgrade;
-          proxy_set_header Connection keep-alive;
-          proxy_set_header Host $host;
-          proxy_cache_bypass $http_upgrade;
-        }
-      }
+      <!DOCTYPE html>
+      <html>  
+        <body>
+          <p><?php echo "Hello Red Squad from host:".gethostname(); ?></p>
+        </body>
+      </html>
 runcmd:
-  - service nginx restart
-  - cd "/var/www/html/"
-  - npm init
-  - npm install express -y
-  - nodejs index.js
-  - service nginx restart
+  - systemctl restart apache2
