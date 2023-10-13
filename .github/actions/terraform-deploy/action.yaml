@@ -39,45 +39,44 @@ inputs:
 runs:
   using: "composite"
   steps:
-
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v2
-        with:
-          terraform_version: ${{ inputs.tf_version }}
-          terraform_wrapper: false
+    - uses: hashicorp/setup-terraform@v2
+      with:
+        # Actions cannot access secrets so pass them in as inputs
+        terraform_version: ${{ inputs.tf_version}}
+        terraform_wrapper: false
  
-      - name: Terraform Init
-        id: init
-        shell: bash
-        working-directory: ${{ inputs.working_directory }}
-        env:
-          ARM_CLIENT_ID: ${{ inputs.client_id }}
-          ARM_CLIENT_SECRET: ${{ inputs.client_secret }}
-          ARM_SUBSCRIPTION_ID: ${{ inputs.subscription_id }}
-          ARM_TENANT_ID: ${{ inputs.tenant_id }}
-        run: terraform init -backend-config="resource_group_name=${{ inputs.backend_tf_rg }}" -backend-config="storage_account_name=${{ inputs.backend_tf_sa }}" -backend-config="container_name=${{ inputs.tfstate_container }}" -backend-config="key=${{ inputs.backend_tfstate_name }}.tfstate"
-        
-      - name: Terraform Plan
-        id: plan
-        shell: bash
-        working-directory: ${{ inputs.working_directory }}
-        continue-on-error: false
-        env:
-          ARM_CLIENT_ID: ${{ inputs.client_id }}
-          ARM_CLIENT_SECRET: ${{ inputs.client_secret }}
-          ARM_SUBSCRIPTION_ID: ${{ inputs.subscription_id }}
-          ARM_TENANT_ID: ${{ inputs.tenant_id }}
-        run: terraform plan -no-color -input=false -var-file="../environments/${{ inputs.environment }}.tfvars" -out=tf.plan
+    - name: Terraform Init
+      id: init
+      shell: bash
+      working-directory: ${{ inputs.working_directory }}
+      env:
+        ARM_CLIENT_ID: ${{ inputs.client_id }}
+        ARM_CLIENT_SECRET: ${{ inputs.client_secret }}
+        ARM_SUBSCRIPTION_ID: ${{ inputs.subscription_id }}
+        ARM_TENANT_ID: ${{ inputs.tenant_id }}
+      run: terraform init -backend-config="resource_group_name=${{ inputs.backend_tf_rg }}" -backend-config="storage_account_name=${{ inputs.backend_tf_sa }}" -backend-config="container_name=${{ inputs.tfstate_container }}" -backend-config="key=${{ inputs.backend_tfstate_name }}.tfstate"
+      
+    - name: Terraform Plan
+      id: plan
+      shell: bash
+      working-directory: ${{ inputs.working_directory }}
+      continue-on-error: false
+      env:
+        ARM_CLIENT_ID: ${{ inputs.client_id }}
+        ARM_CLIENT_SECRET: ${{ inputs.client_secret }}
+        ARM_SUBSCRIPTION_ID: ${{ inputs.subscription_id }}
+        ARM_TENANT_ID: ${{ inputs.tenant_id }}
+      run: terraform plan -no-color -input=false -var-file="../environments/${{ inputs.environment }}.tfvars" -out=tf.plan
 
-      - name: Terraform Apply
-        if: github.ref == 'refs/heads/main'
-        id: apply
-        shell: bash
-        working-directory: ${{ inputs.working_directory }}
-        continue-on-error: false
-        env:
-          ARM_CLIENT_ID: ${{ inputs.client_id }}
-          ARM_CLIENT_SECRET: ${{ inputs.client_secret }}
-          ARM_SUBSCRIPTION_ID: ${{ inputs.subscription_id }}
-          ARM_TENANT_ID: ${{ inputs.tenant_id }}
-        run: terraform apply "tf.plan"
+    - name: Terraform Apply
+      if: github.ref == 'refs/heads/main'
+      id: apply
+      shell: bash
+      working-directory: ${{ inputs.working_directory }}
+      continue-on-error: false
+      env:
+        ARM_CLIENT_ID: ${{ inputs.client_id }}
+        ARM_CLIENT_SECRET: ${{ inputs.client_secret }}
+        ARM_SUBSCRIPTION_ID: ${{ inputs.subscription_id }}
+        ARM_TENANT_ID: ${{ inputs.tenant_id }}
+      run: terraform apply "tf.plan"
