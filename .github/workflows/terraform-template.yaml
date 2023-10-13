@@ -1,0 +1,122 @@
+name: Terraform Deploy - template
+
+on:
+  workflow_call:
+    inputs:
+      backend_tfstate_name:
+        required: true
+        type: string
+      environment:
+        required: true
+        type: string
+      working_directory:
+        required: true
+        type: string
+      tfstate_container:
+        required: true
+        type: string
+      tf_version:
+        required: true
+        type: string
+        defauilt: 1.5.7
+    secrets:
+      CLIENT_ID:
+        required: true
+      CLIENT_SECRET:
+        required: true
+      SUBSCRIPTION_ID:
+        required: true
+      TENANT_ID:
+        required: true
+      BACKEND_TF_RG:
+        required: true
+      BACKEND_TF_SA:
+        required: true
+ 
+jobs:
+  terraform-pr-plan:
+    name: "Run Terraform PR Plan"
+    environment: ${{ inputs.environment }}
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ inputs.working_directory }}
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Terraform PR
+        id: terraform-pr
+        uses: ./.github/actions/terraform-pr
+        with:
+            tf_version: ${{ inputs.tf_version }}
+            client_id: ${{ secrets.CLIENT_ID }}
+            client_secret: ${{ secrets.CLIENT_SECRET }}
+            subscription_id: ${{ secrets.SUBSCRIPTION_ID }}
+            tenant_id: ${{ secrets.TENANT_ID }}
+            backend_tf_rg: ${{ secrets.BACKEND_TF_RG }}
+            backend_tf_sa: ${{ secrets.BACKEND_TF_SA }}
+            tfstate_container: ${{ inputs.tfstate_container }}
+            backend_tfstate_name: ${{ inputs.backend_tfstate_name }}
+            environment: ${{ inputs.environment }}
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            
+
+  terraform-deploy-dev:
+    name: "Run Terraform Prep - ${{ inputs.environment }}"
+    environment: ${{ inputs.environment }}]
+    if: (github.event_name != 'pull_request' && inputs.environment == "dev")
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ inputs.working_directory }}
+    
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Terraform deploy
+        id: terraform-deploy
+        uses: ./.github/actions/terraform-deploy
+        with:
+            tf_version: ${{ inputs.tf_version }}
+            client_id: ${{ secrets.CLIENT_ID }}
+            client_secret: ${{ secrets.CLIENT_SECRET }}
+            subscription_id: ${{ secrets.SUBSCRIPTION_ID }}
+            tenant_id: ${{ secrets.TENANT_ID }}
+            backend_tf_rg: ${{ secrets.BACKEND_TF_RG }}
+            backend_tf_sa: ${{ secrets.BACKEND_TF_SA }}
+            tfstate_container: ${{ inputs.tfstate_container }}
+            backend_tfstate_name: ${{ inputs.backend_tfstate_name }}
+            environment: ${{ inputs.environment }}
+
+  terraform-deploy-prod:
+    name: "Run Terraform Prep - ${{ inputs.environment }}"
+    environment: ${{ inputs.environment }}
+    if: |
+      ${{ github.event_name != 'pull_request' && inputs.environment == 'prod' && github.ref == 'ref/heads/main' }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ inputs.working_directory }}
+    
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Terraform deploy
+        id: terraform-deploy
+        uses: ./.github/actions/terraform-deploy
+        with:
+            tf_version: ${{ inputs.tf_version }}
+            client_id: ${{ secrets.CLIENT_ID }}
+            client_secret: ${{ secrets.CLIENT_SECRET }}
+            subscription_id: ${{ secrets.SUBSCRIPTION_ID }}
+            tenant_id: ${{ secrets.TENANT_ID }}
+            backend_tf_rg: ${{ secrets.BACKEND_TF_RG }}
+            backend_tf_sa: ${{ secrets.BACKEND_TF_SA }}
+            tfstate_container: ${{ inputs.tfstate_container }}
+            backend_tfstate_name: ${{ inputs.backend_tfstate_name }}
+            environment: ${{ inputs.environment }}
