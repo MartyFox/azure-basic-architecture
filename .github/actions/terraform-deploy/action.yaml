@@ -44,6 +44,7 @@ runs:
  
       - name: Terraform Init
         id: init
+        shell: bash
         env:
           ARM_CLIENT_ID: ${{ inputs.client_id }}
           ARM_CLIENT_SECRET: ${{ inputs.client_secret }}
@@ -53,6 +54,7 @@ runs:
         
       - name: Terraform Plan
         id: plan
+        shell: bash
         continue-on-error: false
         env:
           ARM_CLIENT_ID: ${{ inputs.client_id }}
@@ -64,6 +66,7 @@ runs:
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main'
         id: apply
+        shell: bash
         continue-on-error: false
         env:
           ARM_CLIENT_ID: ${{ inputs.client_id }}

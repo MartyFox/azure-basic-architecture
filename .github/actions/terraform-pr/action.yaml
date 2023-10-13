@@ -36,6 +36,7 @@ inputs:
     type: string
 runs:
   using: "composite"
+
   steps:
 
       - name: Setup Terraform
@@ -46,10 +47,12 @@ runs:
  
       - name: Run terraform format check
         id: fmt
+        shell: bash
         run: terraform fmt -check -diff -recursive
 
       - name: Terraform Init
         id: init
+        shell: bash
         env:
           ARM_CLIENT_ID: ${{ inputs.client_id }}
           ARM_CLIENT_SECRET: ${{ inputs.client_secret }}
@@ -59,10 +62,12 @@ runs:
 
       - name: Run terraform validate check
         id: validate
+        shell: bash
         run: terraform validate
 
       - name: Terraform Plan  
         id: plan
+        shell: bash
         continue-on-error: false
         env:
           ARM_CLIENT_ID: ${{ inputs.client_id }}
@@ -73,6 +78,7 @@ runs:
 
       - name: Terraform Show
         id: show
+        shell: bash
         continue-on-error: false
         env:
           ARM_CLIENT_ID: ${{ inputs.client_id }}
@@ -84,6 +90,7 @@ runs:
 
       - name: Add Plan to PR
         id: comment
+        shell: bash
         uses: actions/github-script@v6
         with:
           github-token: ${{ inputs.github_token }}
