@@ -49,4 +49,5 @@ resource "azurerm_linux_virtual_machine_scale_set" "rsi-frontend-vmss" {
       load_balancer_backend_address_pool_ids = [module.fe-loadbalancer.azurerm_lb_backend_address_pool_id]
     }
   }
+
 }
