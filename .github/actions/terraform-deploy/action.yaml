@@ -39,12 +39,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: hashicorp/setup-terraform@v2
-      with:
-        # Actions cannot access secrets so pass them in as inputs
-        terraform_version: ${{ inputs.tf_version}}
-        terraform_wrapper: false
- 
     - name: Terraform Init
       id: init
       shell: bash
