@@ -16,9 +16,8 @@ on:
         required: true
         type: string
       tf_version:
-        required: true
         type: string
-        defauilt: 1.5.7
+        default: 1.5.7
     secrets:
       CLIENT_ID:
         required: true
@@ -42,8 +41,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: ${{ inputs.working_directory }}
-    
+        
     steps:
       - uses: actions/checkout@v4
       
@@ -62,17 +60,17 @@ jobs:
             backend_tfstate_name: ${{ inputs.backend_tfstate_name }}
             environment: ${{ inputs.environment }}
             github_token: ${{ secrets.GITHUB_TOKEN }}
+            working_directory: ${{ inputs.working_directory }}
             
 
   terraform-deploy-dev:
-    name: "Run Terraform Prep - ${{ inputs.environment }}"
+    name: "Run Terraform Prep Dev"
     environment: ${{ inputs.environment }}]
-    if: (github.event_name != 'pull_request' && inputs.environment == "dev")
+    if: ${{ github.event_name != 'pull_request' && inputs.environment == 'dev' }}
     runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash
-        working-directory: ${{ inputs.working_directory }}
     
     steps:
       - uses: actions/checkout@v2
@@ -91,17 +89,16 @@ jobs:
             tfstate_container: ${{ inputs.tfstate_container }}
             backend_tfstate_name: ${{ inputs.backend_tfstate_name }}
             environment: ${{ inputs.environment }}
+            working_directory: ${{ inputs.working_directory }}
 
   terraform-deploy-prod:
-    name: "Run Terraform Prep - ${{ inputs.environment }}"
+    name: "Run Terraform Prep Prod"
     environment: ${{ inputs.environment }}
-    if: |
-      ${{ github.event_name != 'pull_request' && inputs.environment == 'prod' && github.ref == 'ref/heads/main' }}
+    if: ${{ github.event_name != 'pull_request' && inputs.environment == 'prod' && github.ref == 'ref/heads/main' }}
     runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash
-        working-directory: ${{ inputs.working_directory }}
     
     steps:
       - uses: actions/checkout@v2
@@ -120,3 +117,4 @@ jobs:
             tfstate_container: ${{ inputs.tfstate_container }}
             backend_tfstate_name: ${{ inputs.backend_tfstate_name }}
             environment: ${{ inputs.environment }}
+            working_directory: ${{ inputs.working_directory }}
