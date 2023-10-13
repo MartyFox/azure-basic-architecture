@@ -9,8 +9,19 @@ module "nsg-fe" {
 
   custom_rules = [
     {
+      name                       = "Internet"
+      priority                   = "101"
+      direction                  = "Inbound"
+      access                     = "Allow"
+      protocol                   = "Tcp"
+      destination_port_range     = "80"
+      source_address_prefix      = "Internet"
+      destination_address_prefix = local.subnet_addresses["frontend"]
+      description                = "InternetAllowFrontend"
+    },
+    {
       name                         = "VirtualNetwork"
-      priority                     = "101"
+      priority                     = "120"
       direction                    = "Inbound"
       access                       = "Allow"
       protocol                     = "*"
