@@ -50,16 +50,14 @@ Simple infrastructure for Azure architecture, includes use of Terraform and Gith
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_admin_password"></a> [admin\_password](#input\_admin\_password) | n/a | `string` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | n/a | `string` | n/a | yes |
 | <a name="input_fe_instance_type"></a> [fe\_instance\_type](#input\_fe\_instance\_type) | n/a | `string` | n/a | yes |
-| <a name="input_admin_password"></a> [admin\_password](#input\_admin\_password) | n/a | `string` | `"C0mPl3xP@55"` | no |
 | <a name="input_fe_instance_count"></a> [fe\_instance\_count](#input\_fe\_instance\_count) | n/a | `number` | `1` | no |
 | <a name="input_location"></a> [location](#input\_location) | n/a | `string` | `"uk south"` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | `{}` | no |
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| <a name="output_fe-subnets"></a> [fe-subnets](#output\_fe-subnets) | n/a |
+No outputs.
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
