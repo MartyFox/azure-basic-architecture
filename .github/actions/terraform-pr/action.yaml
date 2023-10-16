@@ -27,10 +27,12 @@ inputs:
     required: true
     type: string
   backend_tfstate_name:
-    required: true
+    default: tf-github
+    required: false
     type: string
   tfstate_container:
-    required: true
+    default: github-tf-state
+    required: false
     type: string
   environment:
     required: true
@@ -41,6 +43,7 @@ inputs:
   github_token: 
     required: true
     type: string
+
 
 runs:
   using: "composite"
@@ -66,7 +69,8 @@ runs:
         ARM_CLIENT_SECRET: ${{ inputs.client_secret }}
         ARM_SUBSCRIPTION_ID: ${{ inputs.subscription_id }}
         ARM_TENANT_ID: ${{ inputs.tenant_id }}
-      run: terraform init -backend-config="resource_group_name=${{ inputs.backend_tf_rg }}" -backend-config="storage_account_name=${{ inputs.backend_tf_sa }}" -backend-config="container_name=${{ inputs.tfstate_container }}" -backend-config="key=${{ inputs.backend_tfstate_name }}.tfstate"
+      run: terraform init -backend-config="resource_group_name=${{ inputs.backend_tf_rg }}" -backend-config="storage_account_name=${{ inputs.backend_tf_sa }}" -backend-config="container_name=${{ inputs.tfstate_container }}-${{ inputs.environment }}" -backend-config="key=${{ inputs.environment }}-${{ inputs.backend_tfstate_name }}.tfstate"
+
 
     - name: Run terraform validate check
       id: validate
