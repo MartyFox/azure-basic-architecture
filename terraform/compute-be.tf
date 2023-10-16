@@ -1,56 +1,66 @@
-# resource "azurerm_linux_virtual_machine" "backend" {
-#   resource_group_name                    = azurerm_resource_group.rsi.name
-#   location                               = var.location
+data "cloudinit_config" "vm-be-config" {
+  gzip          = true
+  base64_encode = true
 
-#   name                = "rsi-vm-backend"
-#   size                = "Standard_F2s_v2"
-#   admin_username      = "adminuser"
+  part {
+    filename     = "cloudconfig.yaml"
+    content_type = "text/cloud-config"
 
-#   network_interface_ids = [
-#     azurerm_network_interface.backend.id,
-#   ]
+    content = file("${path.module}/cloudconfig-be.yaml")
+  }
+}
 
-#   admin_ssh_key {
-#     username   = "adminuser"
-#     public_key = file("~/.ssh/azure-simple-arch.pub")
-#   }
+resource "azurerm_linux_virtual_machine" "backend" {
+  resource_group_name = azurerm_resource_group.rsi.name
+  location            = var.location
 
-#   os_disk {
-#     caching              = "ReadWrite"
-#     storage_account_type = "Standard_LRS"
-#   }
+  name                            = "rsi-vm-backend"
+  size                            = "Standard_F2s_v2"
+  admin_username                  = "adminuser"
+  admin_password                  = var.admin_password
+  disable_password_authentication = false #tfsec:ignore:azure-compute-disable-password-authentication
+  custom_data                     = data.cloudinit_config.vm-be-config.rendered
 
-#   source_image_reference {
-#     publisher = "Canonical"
-#     offer     = "UbuntuServer"
-#     sku       = "22_04-lts" 
-#     version   = "latest"
-#   }
+  network_interface_ids = [
+    azurerm_network_interface.backend.id,
+  ]
 
-#   tags = merge(
-#       local.default_tags,
-#       tomap({
-#       "Component" = "Backend"
-#       })
-#   )
-# }
+  os_disk {
+    caching              = "ReadWrite"
+    storage_account_type = "Standard_LRS"
+  }
 
-# resource "azurerm_network_interface" "backend" {
-#   resource_group_name                    = azurerm_resource_group.rsi.name
-#   location                               = var.location
+  source_image_reference {
+    publisher = "Canonical"
+    offer     = "UbuntuServer"
+    sku       = "22_04-lts"
+    version   = "latest"
+  }
 
-#   name                = "rsi-vm-be-nic"
+  tags = merge(
+    local.default_tags,
+    tomap({
+      "Component" = "Backend"
+    })
+  )
+}
 
-#   ip_configuration {
-#     name                          = "internal"
-#     subnet_id                     = lookup(module.rsi-vnet-fe.vnet_subnets_name_id, "backend")
-#     private_ip_address_allocation = "Dynamic"
-#   }
+resource "azurerm_network_interface" "backend" {
+  resource_group_name = azurerm_resource_group.rsi.name
+  location            = var.location
 
-#   tags = merge(
-#       local.default_tags,
-#       tomap({
-#       "Component" = "Backend"
-#       })
-#   )
-# }
+  name = "rsi-vm-be-nic"
+
+  ip_configuration {
+    name                          = "internal"
+    subnet_id                     = lookup(module.rsi-vnet-be.vnet_subnets_name_id, "backend")
+    private_ip_address_allocation = "Dynamic"
+  }
+
+  tags = merge(
+    local.default_tags,
+    tomap({
+      "Component" = "Backend"
+    })
+  )
+}
