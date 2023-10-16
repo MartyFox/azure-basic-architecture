@@ -35,6 +35,9 @@ inputs:
   environment:
     required: true
     type: string
+  admin_pass:
+    required: true
+    type: string
 
 runs:
   using: "composite"
@@ -66,6 +69,7 @@ runs:
         ARM_CLIENT_SECRET: ${{ inputs.client_secret }}
         ARM_SUBSCRIPTION_ID: ${{ inputs.subscription_id }}
         ARM_TENANT_ID: ${{ inputs.tenant_id }}
+        TF_VAR_admin_password: ${{ inputs.admin_pass }}
       run: terraform plan -no-color -input=false -var-file="../environments/${{ inputs.environment }}.tfvars" -out tf.plan
 
     - name: Terraform Apply
