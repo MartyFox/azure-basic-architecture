@@ -53,7 +53,7 @@ resource "azurerm_network_interface" "backend" {
 
   ip_configuration {
     name                          = "internal"
-    subnet_id                     = lookup(module.rsi-vnet-fe.vnet_subnets_name_id, "backend")
+    subnet_id                     = lookup(module.rsi-vnet-be.vnet_subnets_name_id, "backend")
     private_ip_address_allocation = "Dynamic"
   }
 
