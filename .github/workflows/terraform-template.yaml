@@ -83,7 +83,7 @@ jobs:
     name: "Run Terraform - Prod"
     environment: 'prod'
     needs: terraform-deploy-dev
-    if: ${{ github.ref_name == 'main' && github.event.pull_request.merged == true }}
+    if: ${{ github.ref_name == 'main' && github.event_name != 'pull_request' }}
     runs-on: ubuntu-latest
     defaults:
       run:
