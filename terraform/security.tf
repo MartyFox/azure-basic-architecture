@@ -59,6 +59,7 @@ module "nsg-fe" {
   )
 
   depends_on = [azurerm_resource_group.rsi]
+
 }
 
 module "nsg-be" {
