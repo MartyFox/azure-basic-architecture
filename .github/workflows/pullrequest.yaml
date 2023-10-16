@@ -21,14 +21,9 @@ jobs:
     name: 'Terraform'
     uses: ./.github/workflows/terraform-template.yaml
     strategy:
-      matrix:
-        environment: [ 'dev' ]
       fail-fast: true
       max-parallel: 1
     with:
-      environment: ${{ matrix.environment }}
-      backend_tfstate_name: ${{ matrix.environment }}-tf-github
-      tfstate_container: github-tf-state-${{ matrix.environment }}
       working_directory: terraform
     secrets:
       CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
