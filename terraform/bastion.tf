@@ -25,5 +25,4 @@ module "bastion" {
     azurerm_resource_group.bastion,
     module.rsi-vnet-fe
   ]
-
 }
