@@ -16,7 +16,7 @@ resource "azurerm_linux_virtual_machine" "backend" {
 
   name                            = "rsi-vm-backend"
   size                            = "Standard_F2s_v2"
-  admin_username                  = "adminuser"
+  admin_username                  = "azureuser"
   admin_password                  = var.admin_password
   disable_password_authentication = false #tfsec:ignore:azure-compute-disable-password-authentication
   custom_data                     = data.cloudinit_config.vm-be-config.rendered
