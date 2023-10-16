@@ -43,4 +43,5 @@ provider "azurerm" {
 }
 
 provider "cloudinit" {
+
 }
