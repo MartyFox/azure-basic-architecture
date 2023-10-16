@@ -53,7 +53,7 @@ module "fe-loadbalancer" {
 
   resource_group_name   = azurerm_resource_group.rsi.name
   location              = var.location
-  name                  = "fe-lb"
+  name                  = "rsi-fe-lb"
   lb_sku                = "Standard"
   pip_sku               = "Standard"
   pip_name              = "fe-lb-pip"

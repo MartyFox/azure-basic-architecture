@@ -21,19 +21,15 @@ jobs:
     name: 'Terraform'
     uses: ./.github/workflows/terraform-template.yaml
     strategy:
-      matrix:
-        environment: [ 'dev' ]
       fail-fast: true
       max-parallel: 1
     with:
-      environment: ${{ matrix.environment }}
-      backend_tfstate_name: ${{ matrix.environment }}-tf-github
-      tfstate_container: github-tf-state-${{ matrix.environment }}
       working_directory: terraform
     secrets:
       CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
       CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
       SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
       TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-      backend_tf_rg: ${{ secrets.BACKEND_RG }}
-      backend_tf_sa: ${{ secrets.BACKEND_SA }}
+      BACKEND_TF_RG: ${{ secrets.BACKEND_RG }}
+      BACKEND_TF_SA: ${{ secrets.BACKEND_SA }}
+      TFVAR_ADMIN_PASSWORD: ${{ secrets.TF_VAR_admin_password }}

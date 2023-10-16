@@ -3,16 +3,7 @@ name: Terraform - template
 on:
   workflow_call:
     inputs:
-      backend_tfstate_name:
-        required: true
-        type: string
-      environment:
-        required: true
-        type: string
       working_directory:
-        required: true
-        type: string
-      tfstate_container:
         required: true
         type: string
       tf_version:
@@ -31,17 +22,18 @@ on:
         required: true
       BACKEND_TF_SA:
         required: true
+      TFVAR_ADMIN_PASSWORD:
+        required: true
  
 jobs:
   terraform-pr-plan:
     name: "Run Terraform PR Plan"
-    environment: ${{ inputs.environment }}
+    environment: 'dev'
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash
-        
     steps:
       - uses: actions/checkout@v4
       
@@ -56,21 +48,19 @@ jobs:
             tenant_id: ${{ secrets.TENANT_ID }}
             backend_tf_rg: ${{ secrets.BACKEND_TF_RG }}
             backend_tf_sa: ${{ secrets.BACKEND_TF_SA }}
-            tfstate_container: ${{ inputs.tfstate_container }}
-            backend_tfstate_name: ${{ inputs.backend_tfstate_name }}
-            environment: ${{ inputs.environment }}
+            environment: 'dev'
             github_token: ${{ secrets.GITHUB_TOKEN }}
+            admin_pass: ${{ secrets.TFVAR_ADMIN_PASSWORD }}
             working_directory: ${{ inputs.working_directory }}
-            
+
   terraform-deploy-dev:
     name: "Run Terraform - Dev"
     environment: 'dev'
-    if: ${{ github.event_name != 'pull_request' && inputs.environment == 'dev' }}
+    if: ${{ github.event_name != 'pull_request' }}
     runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash
-    
     steps:
       - uses: actions/checkout@v4
 
@@ -85,9 +75,8 @@ jobs:
             tenant_id: ${{ secrets.TENANT_ID }}
             backend_tf_rg: ${{ secrets.BACKEND_TF_RG }}
             backend_tf_sa: ${{ secrets.BACKEND_TF_SA }}
-            tfstate_container: ${{ inputs.tfstate_container }}
-            backend_tfstate_name: ${{ inputs.backend_tfstate_name }}
-            environment: ${{ inputs.environment }}
+            environment: 'dev'
+            admin_pass: ${{ secrets.TFVAR_ADMIN_PASSWORD }}
             working_directory: ${{ inputs.working_directory }}
 
   terraform-deploy-prod:
@@ -99,7 +88,6 @@ jobs:
     defaults:
       run:
         shell: bash
-    
     steps:
       - uses: actions/checkout@v4
 
@@ -114,7 +102,6 @@ jobs:
             tenant_id: ${{ secrets.TENANT_ID }}
             backend_tf_rg: ${{ secrets.BACKEND_TF_RG }}
             backend_tf_sa: ${{ secrets.BACKEND_TF_SA }}
-            tfstate_container: ${{ inputs.tfstate_container }}
-            backend_tfstate_name: ${{ inputs.backend_tfstate_name }}
-            environment: ${{ inputs.environment }}
+            environment: 'prod'
+            admin_pass: ${{ secrets.TFVAR_ADMIN_PASSWORD }}
             working_directory: ${{ inputs.working_directory }}
