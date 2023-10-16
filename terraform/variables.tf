@@ -13,7 +13,6 @@ variable "environment" {
 }
 
 variable "admin_password" {
-  default   = "C0mPl3xP@55"
   type      = string
   sensitive = true
 }
