@@ -82,6 +82,7 @@ jobs:
   terraform-deploy-prod:
     name: "Run Terraform - Prod"
     environment: 'prod'
+    needs: terraform-deploy-dev
     if: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/main'}}
     runs-on: ubuntu-latest
     defaults:
