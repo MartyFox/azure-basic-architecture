@@ -13,7 +13,7 @@ write_files:
         <body>
           <?php
             $HOSTNAME = gethostname();
-            echo "<h2>Hello Red Squad from host: <b>$HOSTNAME</b></h2>";
+            echo "<h2>Hello Red Squad from host: $HOSTNAME</h2>";
           ?>
         </body>
       </html>

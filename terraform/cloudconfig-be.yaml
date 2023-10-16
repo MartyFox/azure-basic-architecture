@@ -1,0 +1,6 @@
+#cloud-config
+package_upgrade: true
+packages:
+  - net-tools
+runcmd:
+  - nc -4 -k -l -v 3306 &
